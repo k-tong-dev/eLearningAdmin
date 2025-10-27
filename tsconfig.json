@@ -13,7 +13,8 @@
     "noEmitOnError": true,
     "noImplicitThis": true,
     "outDir": "dist",
-    "rootDir": "."
+    "rootDir": ".",
+    "types": ["node", "koa"]
   },
   "include": [
     // Include root files
@@ -23,7 +24,8 @@
     // Include all js files
     "./**/*.js",
     // Force the JSON files in the src folder to be included
-    "src/**/*.json"
+    "src/**/*.json",
+    "src/extensions/**/*"
   ],
 
   "exclude": [
@@ -38,6 +40,7 @@
     // Do not include test files
     "**/*.test.*",
     // Do not include plugins in the server compilation
-    "src/plugins/**"
+    "src/plugins/**",
+    "src/extensions/users-permissions/controllers/auth.js"
   ]
 }

@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "report_issues",
+  "info": {
+    "singularName": "report-issue",
+    "pluralName": "report-issues",
+    "displayName": "Report Problem"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "richtext",
+      "maxLength": 500
+    },
+    "internal_noted": {
+      "type": "richtext"
+    },
+    "state": {
+      "type": "enumeration",
+      "default": "draft",
+      "enum": [
+        "draft",
+        "checking",
+        "done"
+      ]
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "report_problems"
+    },
+    "media": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    }
+  }
+}

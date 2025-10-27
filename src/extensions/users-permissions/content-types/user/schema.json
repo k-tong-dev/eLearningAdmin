@@ -1,0 +1,152 @@
+{
+  "kind": "collectionType",
+  "collectionName": "up_users",
+  "info": {
+    "name": "user",
+    "description": "",
+    "singularName": "user",
+    "pluralName": "users",
+    "displayName": "User"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "username": {
+      "type": "string",
+      "minLength": 3,
+      "unique": true,
+      "configurable": false,
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "minLength": 6,
+      "configurable": false,
+      "required": true
+    },
+    "provider": {
+      "type": "string",
+      "configurable": false
+    },
+    "password": {
+      "type": "password",
+      "minLength": 6,
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "resetPasswordToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmationToken": {
+      "type": "string",
+      "configurable": false,
+      "private": true,
+      "searchable": false
+    },
+    "confirmed": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "blocked": {
+      "type": "boolean",
+      "default": false,
+      "configurable": false
+    },
+    "role": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.role",
+      "inversedBy": "users",
+      "configurable": false
+    },
+    "character": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::charactor.charactor",
+      "inversedBy": "users"
+    },
+    "badges": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::badge.badge"
+    },
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "providerId": {
+      "type": "string"
+    },
+    "followers": {
+      "type": "integer",
+      "default": 0
+    },
+    "following": {
+      "type": "integer",
+      "default": 0
+    },
+    "interested": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::interested.interested"
+    },
+    "learning_goals": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::learning-goal.learning-goal"
+    },
+    "prefer_to_learns": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::prefer-to-learn.prefer-to-learn"
+    },
+    "report_problems": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::report-issue.report-issue",
+      "mappedBy": "user"
+    },
+    "bio": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "website": {
+      "type": "string"
+    },
+    "socialLinks": {
+      "type": "json",
+      "required": false
+    },
+    "supabaseId": {
+      "type": "string"
+    },
+    "settings": {
+      "type": "json"
+    },
+    "skills": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::skill.skill"
+    },
+    "subscriptions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subscription.subscription"
+    }
+  }
+}

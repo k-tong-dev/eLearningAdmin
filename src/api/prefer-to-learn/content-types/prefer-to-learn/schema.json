@@ -1,0 +1,43 @@
+{
+  "kind": "collectionType",
+  "collectionName": "prefer_to_learns",
+  "info": {
+    "singularName": "prefer-to-learn",
+    "pluralName": "prefer-to-learns",
+    "displayName": "Prefer To Learn"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    },
+    "icon": {
+      "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    }
+  }
+}
