@@ -5,4 +5,7 @@ export default ({ env }) => ({
     keys: env.array('APP_KEYS'),
   },
   url: process.env.NEXT_PUBLIC_STRAPI_URL,
+  logger: {
+    level: 'info',
+  },
 });

@@ -1410,7 +1410,7 @@ export interface PluginUsersPermissionsUser
     draftAndPublish: false;
   };
   attributes: {
-    avatar: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    avatar: Schema.Attribute.Media<'images' | 'files'>;
     badges: Schema.Attribute.Relation<'oneToMany', 'api::badge.badge'>;
     bio: Schema.Attribute.String;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
