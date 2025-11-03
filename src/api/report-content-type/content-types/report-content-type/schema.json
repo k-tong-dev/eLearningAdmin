@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "report_content_types",
+  "info": {
+    "singularName": "report-content-type",
+    "pluralName": "report-content-types",
+    "displayName": "Report Content Type"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

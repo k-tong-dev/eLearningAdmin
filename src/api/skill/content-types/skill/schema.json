@@ -24,6 +24,14 @@
       },
       "required": true,
       "unique": true
+    },
+    "code": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }

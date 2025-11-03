@@ -1,0 +1,144 @@
+{
+  "kind": "collectionType",
+  "collectionName": "course_courses",
+  "info": {
+    "singularName": "course-course",
+    "pluralName": "course-courses",
+    "displayName": "Course Course"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "instructor": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::instructor.instructor",
+      "inversedBy": "course_courses"
+    },
+    "Price": {
+      "type": "decimal",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": 0
+    },
+    "course_level": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::course-level.course-level"
+    },
+    "duration_minutes": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": 0
+    },
+    "course_categories": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-category.course-category"
+    },
+    "course_tages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-tage.course-tage"
+    },
+    "currency": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::currency.currency"
+    },
+    "is_paid": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": false
+    },
+    "course_contents": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-content.course-content",
+      "mappedBy": "course_course"
+    },
+    "description": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "preview_available": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": false
+    },
+    "preview_url": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "purchase_count": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": 0
+    },
+    "revenue_generated": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": 0
+    },
+    "preview_duration": {
+      "type": "decimal",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": 0
+    },
+    "purchase_transactions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::purchase-transaction.purchase-transaction",
+      "mappedBy": "course_course"
+    }
+  }
+}

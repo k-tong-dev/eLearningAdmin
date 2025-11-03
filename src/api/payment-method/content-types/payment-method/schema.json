@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "payment_methods",
+  "info": {
+    "singularName": "payment-method",
+    "pluralName": "payment-methods",
+    "displayName": "Payment Method"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "payment_methods"
+    },
+    "type": {
+      "type": "enumeration",
+      "default": "credit_card",
+      "enum": [
+        "credit_card",
+        "debit_card",
+        "paypal",
+        "bank_account"
+      ]
+    },
+    "provider": {
+      "type": "enumeration",
+      "default": "stripe",
+      "enum": [
+        "stripe",
+        "paypal",
+        "manual"
+      ]
+    },
+    "details": {
+      "type": "json"
+    },
+    "default": {
+      "type": "boolean",
+      "default": false
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "stripe_payment_method_id": {
+      "type": "string"
+    },
+    "added_at": {
+      "type": "date"
+    }
+  }
+}

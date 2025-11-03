@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "course_levels",
+  "info": {
+    "singularName": "course-level",
+    "pluralName": "course-levels",
+    "displayName": "Course Level"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

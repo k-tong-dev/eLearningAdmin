@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subscription_taxes",
+  "info": {
+    "singularName": "subscription-tax",
+    "pluralName": "subscription-taxes",
+    "displayName": "Subscription Tax"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "price": {
+      "type": "decimal",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": 0
+    }
+  }
+}

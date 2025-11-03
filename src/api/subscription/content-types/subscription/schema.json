@@ -15,6 +15,47 @@
       "type": "string",
       "required": false,
       "unique": false
+    },
+    "type": {
+      "type": "enumeration",
+      "default": "Free",
+      "enum": [
+        "Free",
+        "Basic",
+        "Pro",
+        "Enterpris"
+      ]
+    },
+    "price": {
+      "type": "decimal",
+      "default": 0
+    },
+    "subscription_tax": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::subscription-tax.subscription-tax"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "subscription_benefits": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::subscription-benefit.subscription-benefit"
+    },
+    "currency": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::currency.currency"
+    },
+    "is_popular": {
+      "type": "boolean",
+      "default": false
+    },
+    "price_per_instructor": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
     }
   }
 }

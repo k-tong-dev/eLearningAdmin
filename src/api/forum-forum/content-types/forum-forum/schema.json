@@ -1,0 +1,61 @@
+{
+  "kind": "collectionType",
+  "collectionName": "forum_forums",
+  "info": {
+    "singularName": "forum-forum",
+    "pluralName": "forum-forums",
+    "displayName": "Forum Forum"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "forum_tags": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::forum-tag.forum-tag"
+    },
+    "liked": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "dislike": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "viewers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user"
+    }
+  }
+}

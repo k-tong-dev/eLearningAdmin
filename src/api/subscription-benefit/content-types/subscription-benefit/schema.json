@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "subscription_benefits",
+  "info": {
+    "singularName": "subscription-benefit",
+    "pluralName": "subscription-benefits",
+    "displayName": "Subscription Benefit"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "locked": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": false
+    }
+  }
+}

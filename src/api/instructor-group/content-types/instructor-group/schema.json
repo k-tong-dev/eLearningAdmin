@@ -1,0 +1,26 @@
+{
+  "kind": "collectionType",
+  "collectionName": "instructor_groups",
+  "info": {
+    "singularName": "instructor-group",
+    "pluralName": "instructor-groups",
+    "displayName": "Instructor Group"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::instructor.instructor",
+      "required": true
+    },
+  }
+}
+

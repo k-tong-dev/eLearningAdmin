@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_subscriptions",
+  "info": {
+    "singularName": "user-subscription",
+    "pluralName": "user-subscriptions",
+    "displayName": "User Subscription"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_subscriptions"
+    },
+    "subscription": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::subscription.subscription"
+    },
+    "state": {
+      "type": "enumeration",
+      "default": "pending",
+      "enum": [
+        "active",
+        "cancelled",
+        "pending"
+      ]
+    },
+    "current_instructor_count": {
+      "type": "integer",
+      "default": 0
+    },
+    "next_billing_date": {
+      "type": "date"
+    },
+    "last_billing_date": {
+      "type": "date"
+    },
+    "stripe_subscription_id": {
+      "type": "string"
+    },
+    "stripe_customer_id": {
+      "type": "string"
+    },
+    "cancelled_at": {
+      "type": "date"
+    },
+    "auto_renew": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

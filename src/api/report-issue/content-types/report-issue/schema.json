@@ -32,9 +32,8 @@
     },
     "user": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "report_problems"
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     },
     "media": {
       "type": "media",
@@ -43,6 +42,32 @@
         "images",
         "files"
       ]
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "Issue",
+        "Article",
+        "Content"
+      ]
+    },
+    "report_content_types": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::report-content-type.report-content-type",
+      "conditions": {
+        "visible": {
+          "!=": [
+            {
+              "var": "type"
+            },
+            "Issue"
+          ]
+        }
+      }
+    },
+    "url": {
+      "type": "string"
     }
   }
 }

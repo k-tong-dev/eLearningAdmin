@@ -111,12 +111,6 @@
       "relation": "oneToMany",
       "target": "api::prefer-to-learn.prefer-to-learn"
     },
-    "report_problems": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::report-issue.report-issue",
-      "mappedBy": "user"
-    },
     "bio": {
       "type": "string"
     },
@@ -126,25 +120,91 @@
     "website": {
       "type": "string"
     },
-    "socialLinks": {
-      "type": "json",
-      "required": false
-    },
     "supabaseId": {
       "type": "string"
-    },
-    "settings": {
-      "type": "json"
     },
     "skills": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::skill.skill"
     },
-    "subscriptions": {
+    "monetization": {
+      "type": "enumeration",
+      "default": "locked",
+      "enum": [
+        "locked",
+        "unlock"
+      ]
+    },
+    "notice_new_enrollment": {
+      "type": "boolean",
+      "default": false
+    },
+    "notice_course_reviewer": {
+      "type": "boolean",
+      "default": false
+    },
+    "notice_payment": {
+      "type": "boolean",
+      "default": false
+    },
+    "notice_weekly_analysis": {
+      "type": "boolean",
+      "default": false
+    },
+    "facebook": {
+      "type": "string"
+    },
+    "linkin": {
+      "type": "string"
+    },
+    "twister": {
+      "type": "string"
+    },
+    "instagram": {
+      "type": "string"
+    },
+    "github": {
+      "type": "string"
+    },
+    "instructor_limit": {
+      "type": "integer",
+      "default": 1
+    },
+    "instructor_count": {
+      "type": "integer",
+      "default": 0
+    },
+    "banking_info": {
+      "type": "blocks"
+    },
+    "instructors": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::subscription.subscription"
+      "target": "api::instructor.instructor",
+      "mappedBy": "user"
+    },
+    "purchase_transactions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::purchase-transaction.purchase-transaction",
+      "mappedBy": "user"
+    },
+    "user_subscriptions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-subscription.user-subscription",
+      "mappedBy": "user"
+    },
+    "payment_methods": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::payment-method.payment-method",
+      "mappedBy": "user"
+    },
+    "price_per_instructor": {
+      "type": "integer",
+      "default": 0
     }
   }
 }
