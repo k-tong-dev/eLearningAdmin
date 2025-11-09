@@ -1,0 +1,68 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_group_groups",
+  "info": {
+    "singularName": "user-group-group",
+    "pluralName": "user-group-groups",
+    "displayName": "User Group Group"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "instructors": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::instructor.instructor",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "group_types"
+            },
+            "instructor"
+          ]
+        }
+      }
+    },
+    "users": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "group_types"
+            },
+            "user"
+          ]
+        }
+      }
+    },
+    "group_types": {
+      "type": "enumeration",
+      "enum": [
+        "instructor",
+        "user"
+      ]
+    },
+    "bio": {
+      "type": "string"
+    },
+    "private": {
+      "type": "boolean",
+      "default": false
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_groups"
+    }
+  }
+}

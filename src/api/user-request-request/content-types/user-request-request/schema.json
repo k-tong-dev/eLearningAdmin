@@ -1,0 +1,97 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_request_requests",
+  "info": {
+    "singularName": "user-request-request",
+    "pluralName": "user-request-requests",
+    "displayName": "User Request Request "
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "from_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "request_type": {
+      "type": "enumeration",
+      "enum": [
+        "instructor",
+        "group",
+        "friend"
+      ],
+      "default": "friend"
+    },
+    "request_status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "accepted",
+        "rejected",
+        "cancelled"
+      ],
+      "default": "pending"
+    },
+    "to_instructor": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::instructor.instructor",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "request_type"
+            },
+            "instructor"
+          ]
+        }
+      }
+    },
+    "to_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "request_type"
+            },
+            "friend"
+          ]
+        }
+      }
+    },
+    "user_group_group": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::user-group-group.user-group-group",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "request_type"
+            },
+            "group"
+          ]
+        }
+      }
+    },
+    "message": {
+      "type": "string"
+    },
+    "invited_at": {
+      "type": "datetime"
+    },
+    "responded_at": {
+      "type": "datetime"
+    },
+    "read": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

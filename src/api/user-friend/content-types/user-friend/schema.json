@@ -1,0 +1,45 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_friends",
+  "info": {
+    "singularName": "user-friend",
+    "pluralName": "user-friends",
+    "displayName": "User Friend"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "from_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "to_user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "friend_status": {
+      "type": "enumeration",
+      "default": "pending",
+      "enum": [
+        "pending",
+        "accepted",
+        "declined",
+        "cancelled",
+        "blocked"
+      ]
+    },
+    "requested_at": {
+      "type": "datetime"
+    },
+    "responded_at": {
+      "type": "datetime"
+    },
+    "metadata": {
+      "type": "json"
+    }
+  }
+}

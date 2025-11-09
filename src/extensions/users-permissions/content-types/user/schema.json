@@ -88,14 +88,6 @@
     "providerId": {
       "type": "string"
     },
-    "followers": {
-      "type": "integer",
-      "default": 0
-    },
-    "following": {
-      "type": "integer",
-      "default": 0
-    },
     "interested": {
       "type": "relation",
       "relation": "oneToMany",
@@ -130,6 +122,7 @@
     },
     "monetization": {
       "type": "enumeration",
+      "required": true,
       "default": "locked",
       "enum": [
         "locked",
@@ -202,9 +195,28 @@
       "target": "api::payment-method.payment-method",
       "mappedBy": "user"
     },
-    "price_per_instructor": {
+    "following": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::instructor.instructor",
+      "inversedBy": "followers"
+    },
+    "friend_limit": {
       "type": "integer",
-      "default": 0
+      "default": 1000
+    },
+    "instructor_group_limit": {
+      "type": "integer",
+      "default": 20
+    },
+    "user_group_limit": {
+      "type": "integer"
+    },
+    "user_groups": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-group-group.user-group-group",
+      "mappedBy": "owner"
     }
   }
 }

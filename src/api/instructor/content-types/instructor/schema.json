@@ -172,18 +172,6 @@
       "target": "api::course-course.course-course",
       "mappedBy": "instructor"
     },
-    "sent_invitations": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::instructor-invitation.instructor-invitation",
-      "mappedBy": "from_instructor"
-    },
-    "received_invitations": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::instructor-invitation.instructor-invitation",
-      "mappedBy": "to_instructor"
-    },
     "is_active": {
       "type": "boolean",
       "pluginOptions": {
@@ -192,6 +180,34 @@
         }
       },
       "default": true
+    },
+    "followers": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "following"
+    },
+    "collaborated_instructors": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::instructor.instructor",
+      "inversedBy": "instructors"
+    },
+    "instructors": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::instructor.instructor",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": ""
+            },
+            ""
+          ]
+        }
+      },
+      "mappedBy": "collaborated_instructors"
     }
   }
 }

@@ -31,10 +31,6 @@
         "pending"
       ]
     },
-    "current_instructor_count": {
-      "type": "integer",
-      "default": 0
-    },
     "next_billing_date": {
       "type": "date"
     },

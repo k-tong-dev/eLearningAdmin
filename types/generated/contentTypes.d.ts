@@ -1286,91 +1286,6 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   };
 }
 
-export interface ApiInstructorGroupInstructorGroup
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'instructor_groups';
-  info: {
-    displayName: 'Instructor Group';
-    pluralName: 'instructor-groups';
-    singularName: 'instructor-group';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::instructor-group.instructor-group'
-    > &
-      Schema.Attribute.Private;
-    name: Schema.Attribute.String & Schema.Attribute.Required;
-    owner: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::instructor.instructor'
-    > &
-      Schema.Attribute.Required;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
-export interface ApiInstructorInvitationInstructorInvitation
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'instructor_invitations';
-  info: {
-    displayName: 'Instructor Invitation';
-    pluralName: 'instructor-invitations';
-    singularName: 'instructor-invitation';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    course_context: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::course-course.course-course'
-    >;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    from_instructor: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::instructor.instructor'
-    > &
-      Schema.Attribute.Required;
-    invited_at: Schema.Attribute.DateTime;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::instructor-invitation.instructor-invitation'
-    > &
-      Schema.Attribute.Private;
-    message: Schema.Attribute.Text;
-    publishedAt: Schema.Attribute.DateTime;
-    read: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    responded_at: Schema.Attribute.DateTime;
-    status: Schema.Attribute.Enumeration<
-      ['pending', 'accepted', 'rejected', 'cancelled']
-    > &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'pending'>;
-    to_instructor: Schema.Attribute.Relation<
-      'manyToOne',
-      'api::instructor.instructor'
-    > &
-      Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
   collectionName: 'instructors';
   info: {
@@ -1405,6 +1320,10 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    collaborated_instructors: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::instructor.instructor'
+    >;
     course_courses: Schema.Attribute.Relation<
       'oneToMany',
       'api::course-course.course-course'
@@ -1424,6 +1343,10 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    followers: Schema.Attribute.Relation<
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
     github: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1436,6 +1359,10 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    instructors: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::instructor.instructor'
+    >;
     is_active: Schema.Attribute.Boolean &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1486,17 +1413,9 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<0>;
-    received_invitations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::instructor-invitation.instructor-invitation'
-    >;
     revenue_payouts: Schema.Attribute.Relation<
       'oneToMany',
       'api::revenue-payout.revenue-payout'
-    >;
-    sent_invitations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::instructor-invitation.instructor-invitation'
     >;
     specializations: Schema.Attribute.Blocks &
       Schema.Attribute.SetPluginOptions<{
@@ -1609,6 +1528,100 @@ export interface ApiLearningGoalLearningGoal
         };
       }>;
     publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiMenuControllerMenuController
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'menu_controllers';
+  info: {
+    displayName: 'Menu Controller';
+    pluralName: 'menu-controllers';
+    singularName: 'menu-controller';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    category: Schema.Attribute.Enumeration<
+      ['page', 'feature', 'course', 'instructor', 'blog', 'forum']
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'page'>;
+    code: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    gradient: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    href: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    icon: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    keywords: Schema.Attribute.JSON &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::menu-controller.menu-controller'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    requiresAuth: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
+    requiresPro: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -2119,11 +2132,21 @@ export interface ApiSubscriptionSubscription
     draftAndPublish: true;
   };
   attributes: {
+    amount_friend_allowed: Schema.Attribute.Integer &
+      Schema.Attribute.DefaultTo<1000>;
+    amount_group_allowed: Schema.Attribute.Integer &
+      Schema.Attribute.DefaultTo<50>;
+    amount_instructor: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    amount_instructor_group_allowed: Schema.Attribute.Integer &
+      Schema.Attribute.DefaultTo<20>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     currency: Schema.Attribute.Relation<'oneToOne', 'api::currency.currency'>;
     description: Schema.Attribute.RichText;
+    group_plan: Schema.Attribute.Enumeration<['base', 'friend_extend']> &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'base'>;
     is_popular: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -2133,10 +2156,10 @@ export interface ApiSubscriptionSubscription
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
     price: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
-    price_per_instructor: Schema.Attribute.Decimal &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<0>;
     publishedAt: Schema.Attribute.DateTime;
+    sequnce: Schema.Attribute.Integer &
+      Schema.Attribute.Unique &
+      Schema.Attribute.DefaultTo<1>;
     subscription_benefits: Schema.Attribute.Relation<
       'oneToMany',
       'api::subscription-benefit.subscription-benefit'
@@ -2150,6 +2173,148 @@ export interface ApiSubscriptionSubscription
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiUserFriendUserFriend extends Struct.CollectionTypeSchema {
+  collectionName: 'user_friends';
+  info: {
+    displayName: 'User Friend';
+    pluralName: 'user-friends';
+    singularName: 'user-friend';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    friend_status: Schema.Attribute.Enumeration<
+      ['pending', 'accepted', 'declined', 'cancelled', 'blocked']
+    > &
+      Schema.Attribute.DefaultTo<'pending'>;
+    from_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-friend.user-friend'
+    > &
+      Schema.Attribute.Private;
+    metadata: Schema.Attribute.JSON;
+    publishedAt: Schema.Attribute.DateTime;
+    requested_at: Schema.Attribute.DateTime;
+    responded_at: Schema.Attribute.DateTime;
+    to_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiUserGroupGroupUserGroupGroup
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'user_group_groups';
+  info: {
+    displayName: 'User Group Group';
+    pluralName: 'user-group-groups';
+    singularName: 'user-group-group';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    bio: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    group_types: Schema.Attribute.Enumeration<['instructor', 'user']>;
+    instructors: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::instructor.instructor'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-group-group.user-group-group'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    owner: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    private: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users: Schema.Attribute.Relation<
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
+export interface ApiUserRequestRequestUserRequestRequest
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'user_request_requests';
+  info: {
+    displayName: 'User Request Request ';
+    pluralName: 'user-request-requests';
+    singularName: 'user-request-request';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    from_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    invited_at: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-request-request.user-request-request'
+    > &
+      Schema.Attribute.Private;
+    message: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    read: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    request_status: Schema.Attribute.Enumeration<
+      ['pending', 'accepted', 'rejected', 'cancelled']
+    > &
+      Schema.Attribute.DefaultTo<'pending'>;
+    request_type: Schema.Attribute.Enumeration<
+      ['instructor', 'group', 'friend']
+    > &
+      Schema.Attribute.DefaultTo<'friend'>;
+    responded_at: Schema.Attribute.DateTime;
+    to_instructor: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::instructor.instructor'
+    >;
+    to_user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user_group_group: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::user-group-group.user-group-group'
+    >;
   };
 }
 
@@ -2170,8 +2335,6 @@ export interface ApiUserSubscriptionUserSubscription
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    current_instructor_count: Schema.Attribute.Integer &
-      Schema.Attribute.DefaultTo<0>;
     last_billing_date: Schema.Attribute.Date;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -2676,11 +2839,16 @@ export interface PluginUsersPermissionsUser
         minLength: 6;
       }>;
     facebook: Schema.Attribute.String;
-    followers: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
-    following: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    following: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::instructor.instructor'
+    >;
+    friend_limit: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1000>;
     github: Schema.Attribute.String;
     instagram: Schema.Attribute.String;
     instructor_count: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    instructor_group_limit: Schema.Attribute.Integer &
+      Schema.Attribute.DefaultTo<20>;
     instructor_limit: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
     instructors: Schema.Attribute.Relation<
       'oneToMany',
@@ -2703,6 +2871,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.Private;
     location: Schema.Attribute.String;
     monetization: Schema.Attribute.Enumeration<['locked', 'unlock']> &
+      Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'locked'>;
     notice_course_reviewer: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
@@ -2725,8 +2894,6 @@ export interface PluginUsersPermissionsUser
       'oneToMany',
       'api::prefer-to-learn.prefer-to-learn'
     >;
-    price_per_instructor: Schema.Attribute.Integer &
-      Schema.Attribute.DefaultTo<0>;
     provider: Schema.Attribute.String;
     providerId: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
@@ -2745,6 +2912,11 @@ export interface PluginUsersPermissionsUser
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_group_limit: Schema.Attribute.Integer;
+    user_groups: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-group-group.user-group-group'
+    >;
     user_subscriptions: Schema.Attribute.Relation<
       'oneToMany',
       'api::user-subscription.user-subscription'
@@ -2788,11 +2960,10 @@ declare module '@strapi/strapi' {
       'api::forum-forum.forum-forum': ApiForumForumForumForum;
       'api::forum-tag.forum-tag': ApiForumTagForumTag;
       'api::global.global': ApiGlobalGlobal;
-      'api::instructor-group.instructor-group': ApiInstructorGroupInstructorGroup;
-      'api::instructor-invitation.instructor-invitation': ApiInstructorInvitationInstructorInvitation;
       'api::instructor.instructor': ApiInstructorInstructor;
       'api::interested.interested': ApiInterestedInterested;
       'api::learning-goal.learning-goal': ApiLearningGoalLearningGoal;
+      'api::menu-controller.menu-controller': ApiMenuControllerMenuController;
       'api::payment-method.payment-method': ApiPaymentMethodPaymentMethod;
       'api::prefer-to-learn.prefer-to-learn': ApiPreferToLearnPreferToLearn;
       'api::purchase-transaction.purchase-transaction': ApiPurchaseTransactionPurchaseTransaction;
@@ -2803,6 +2974,9 @@ declare module '@strapi/strapi' {
       'api::subscription-benefit.subscription-benefit': ApiSubscriptionBenefitSubscriptionBenefit;
       'api::subscription-tax.subscription-tax': ApiSubscriptionTaxSubscriptionTax;
       'api::subscription.subscription': ApiSubscriptionSubscription;
+      'api::user-friend.user-friend': ApiUserFriendUserFriend;
+      'api::user-group-group.user-group-group': ApiUserGroupGroupUserGroupGroup;
+      'api::user-request-request.user-request-request': ApiUserRequestRequestUserRequestRequest;
       'api::user-subscription.user-subscription': ApiUserSubscriptionUserSubscription;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

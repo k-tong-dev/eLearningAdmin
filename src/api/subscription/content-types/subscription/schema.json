@@ -16,6 +16,15 @@
       "required": false,
       "unique": false
     },
+    "group_plan": {
+      "type": "enumeration",
+      "required": true,
+      "default": "base",
+      "enum": [
+        "base",
+        "friend_extend"
+      ]
+    },
     "type": {
       "type": "enumeration",
       "default": "Free",
@@ -26,8 +35,23 @@
         "Enterpris"
       ]
     },
+    "sequnce": {
+      "type": "integer",
+      "default": 1,
+      "unique": true
+    },
     "price": {
       "type": "decimal",
+      "conditions": {
+        "visible": {
+          "!=": [
+            {
+              "var": "type"
+            },
+            "Free"
+          ]
+        }
+      },
       "default": 0
     },
     "subscription_tax": {
@@ -52,10 +76,52 @@
       "type": "boolean",
       "default": false
     },
-    "price_per_instructor": {
-      "type": "decimal",
-      "required": true,
+    "amount_instructor": {
+      "type": "integer",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "group_plan"
+            },
+            "base"
+          ]
+        }
+      },
+      "required": false,
       "default": 0
+    },
+    "amount_friend_allowed": {
+      "type": "integer",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "group_plan"
+            },
+            "friend_extend"
+          ]
+        }
+      },
+      "default": 1000
+    },
+    "amount_instructor_group_allowed": {
+      "type": "integer",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "group_plan"
+            },
+            "base"
+          ]
+        }
+      },
+      "default": 20
+    },
+    "amount_group_allowed": {
+      "type": "integer",
+      "default": 50
     }
   }
 }
