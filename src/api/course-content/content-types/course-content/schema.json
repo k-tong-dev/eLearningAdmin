@@ -23,11 +23,11 @@
         }
       }
     },
-    "course_materials": {
+    "course_material": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToOne",
       "target": "api::course-material.course-material",
-      "mappedBy": "course_content"
+      "inversedBy": "course_contents"
     },
     "course_course": {
       "type": "relation",

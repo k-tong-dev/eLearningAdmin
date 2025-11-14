@@ -89,11 +89,11 @@
         }
       }
     },
-    "course_content": {
+    "course_contents": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToMany",
       "target": "api::course-content.course-content",
-      "inversedBy": "course_materials"
+      "mappedBy": "course_material"
     },
     "price": {
       "type": "decimal",

@@ -682,6 +682,44 @@ export interface ApiCharactorCharactor extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
+  collectionName: 'companies';
+  info: {
+    displayName: 'Company';
+    pluralName: 'companies';
+    singularName: 'company';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    address: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    founded_year: Schema.Attribute.Date;
+    industry: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::company.company'
+    > &
+      Schema.Attribute.Private;
+    logo: Schema.Attribute.Media<'images'>;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    revenue: Schema.Attribute.Decimal;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    users: Schema.Attribute.Relation<
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
+    website: Schema.Attribute.String;
+  };
+}
+
 export interface ApiContactContact extends Struct.CollectionTypeSchema {
   collectionName: 'contacts';
   info: {
@@ -714,6 +752,38 @@ export interface ApiContactContact extends Struct.CollectionTypeSchema {
       'oneToOne',
       'plugin::users-permissions.user'
     >;
+  };
+}
+
+export interface ApiCourseBadgeCourseBadge extends Struct.CollectionTypeSchema {
+  collectionName: 'course_badges';
+  info: {
+    displayName: 'Course Badge';
+    pluralName: 'course-badges';
+    singularName: 'course-badge';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    code: Schema.Attribute.String & Schema.Attribute.Unique;
+    color: Schema.Attribute.String;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    icon: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::course-badge.course-badge'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
   };
 }
 
@@ -789,8 +859,8 @@ export interface ApiCourseContentCourseContent
       'manyToOne',
       'api::course-course.course-course'
     >;
-    course_materials: Schema.Attribute.Relation<
-      'oneToMany',
+    course_material: Schema.Attribute.Relation<
+      'manyToOne',
       'api::course-material.course-material'
     >;
     createdAt: Schema.Attribute.DateTime;
@@ -1027,8 +1097,8 @@ export interface ApiCourseMaterialCourseMaterial
     };
   };
   attributes: {
-    course_content: Schema.Attribute.Relation<
-      'manyToOne',
+    course_contents: Schema.Attribute.Relation<
+      'oneToMany',
       'api::course-content.course-content'
     >;
     createdAt: Schema.Attribute.DateTime;
@@ -1084,6 +1154,48 @@ export interface ApiCourseMaterialCourseMaterial
   };
 }
 
+export interface ApiCourseQuizCourseQuiz extends Struct.CollectionTypeSchema {
+  collectionName: 'course_quizs';
+  info: {
+    displayName: 'Course Quiz';
+    pluralName: 'course-quizs';
+    singularName: 'course-quiz';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::course-quiz.course-quiz'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    type: Schema.Attribute.Enumeration<
+      [
+        'multiple-choice',
+        'true-false',
+        'fill-in-the-blank',
+        'short-answer',
+        'matching',
+        'numeric',
+        'rating',
+        'file-upload',
+      ]
+    > &
+      Schema.Attribute.DefaultTo<'multiple-choice'>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCourseTageCourseTage extends Struct.CollectionTypeSchema {
   collectionName: 'course_tages';
   info: {
@@ -1096,6 +1208,7 @@ export interface ApiCourseTageCourseTage extends Struct.CollectionTypeSchema {
   };
   attributes: {
     code: Schema.Attribute.String & Schema.Attribute.Unique;
+    course_count: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1110,7 +1223,12 @@ export interface ApiCourseTageCourseTage extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
+    popularity_score: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
     publishedAt: Schema.Attribute.DateTime;
+    related_tags: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::course-tage.course-tage'
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -2144,7 +2262,9 @@ export interface ApiSubscriptionSubscription
       Schema.Attribute.Private;
     currency: Schema.Attribute.Relation<'oneToOne', 'api::currency.currency'>;
     description: Schema.Attribute.RichText;
-    group_plan: Schema.Attribute.Enumeration<['base', 'friend_extend']> &
+    group_plan: Schema.Attribute.Enumeration<
+      ['base', 'friend_extend', 'group']
+    > &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'base'>;
     is_popular: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -2157,9 +2277,7 @@ export interface ApiSubscriptionSubscription
     name: Schema.Attribute.String;
     price: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
     publishedAt: Schema.Attribute.DateTime;
-    sequnce: Schema.Attribute.Integer &
-      Schema.Attribute.Unique &
-      Schema.Attribute.DefaultTo<1>;
+    sequnce: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
     subscription_benefits: Schema.Attribute.Relation<
       'oneToMany',
       'api::subscription-benefit.subscription-benefit'
@@ -2234,7 +2352,7 @@ export interface ApiUserGroupGroupUserGroupGroup
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    group_types: Schema.Attribute.Enumeration<['instructor', 'user']>;
+    group_types: Schema.Attribute.Enumeration<['instructor', 'group']>;
     instructors: Schema.Attribute.Relation<
       'oneToMany',
       'api::instructor.instructor'
@@ -2828,6 +2946,7 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'api::charactor.charactor'
     >;
+    company: Schema.Attribute.Relation<'manyToOne', 'api::company.company'>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
@@ -2849,6 +2968,8 @@ export interface PluginUsersPermissionsUser
     instructor_count: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     instructor_group_limit: Schema.Attribute.Integer &
       Schema.Attribute.DefaultTo<20>;
+    instructor_group_member_limit: Schema.Attribute.Integer &
+      Schema.Attribute.DefaultTo<60>;
     instructor_limit: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1>;
     instructors: Schema.Attribute.Relation<
       'oneToMany',
@@ -2913,6 +3034,8 @@ export interface PluginUsersPermissionsUser
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     user_group_limit: Schema.Attribute.Integer;
+    user_group_member_limit: Schema.Attribute.Integer &
+      Schema.Attribute.DefaultTo<120>;
     user_groups: Schema.Attribute.Relation<
       'oneToMany',
       'api::user-group-group.user-group-group'
@@ -2949,12 +3072,15 @@ declare module '@strapi/strapi' {
       'api::badge.badge': ApiBadgeBadge;
       'api::category.category': ApiCategoryCategory;
       'api::charactor.charactor': ApiCharactorCharactor;
+      'api::company.company': ApiCompanyCompany;
       'api::contact.contact': ApiContactContact;
+      'api::course-badge.course-badge': ApiCourseBadgeCourseBadge;
       'api::course-category.course-category': ApiCourseCategoryCourseCategory;
       'api::course-content.course-content': ApiCourseContentCourseContent;
       'api::course-course.course-course': ApiCourseCourseCourseCourse;
       'api::course-level.course-level': ApiCourseLevelCourseLevel;
       'api::course-material.course-material': ApiCourseMaterialCourseMaterial;
+      'api::course-quiz.course-quiz': ApiCourseQuizCourseQuiz;
       'api::course-tage.course-tage': ApiCourseTageCourseTage;
       'api::currency.currency': ApiCurrencyCurrency;
       'api::forum-forum.forum-forum': ApiForumForumForumForum;

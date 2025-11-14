@@ -1,0 +1,31 @@
+{
+  "kind": "collectionType",
+  "collectionName": "course_badges",
+  "info": {
+    "singularName": "course-badge",
+    "pluralName": "course-badges",
+    "displayName": "Course Badge"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "code": {
+      "type": "string",
+      "unique": true
+    },
+    "icon": {
+      "type": "string"
+    },
+    "color": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    }
+  }
+}

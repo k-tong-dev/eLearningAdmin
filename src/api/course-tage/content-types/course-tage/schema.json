@@ -27,6 +27,19 @@
         "videos",
         "audios"
       ]
+    },
+    "course_count": {
+      "type": "integer",
+      "default": 0
+    },
+    "popularity_score": {
+      "type": "decimal",
+      "default": 0
+    },
+    "related_tags": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-tage.course-tage"
     }
   }
 }

@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "course_quizs",
+  "info": {
+    "singularName": "course-quiz",
+    "pluralName": "course-quizs",
+    "displayName": "Course Quiz"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "default": "multiple-choice",
+      "enum": [
+        "multiple-choice",
+        "true-false",
+        "fill-in-the-blank",
+        "short-answer",
+        "matching",
+        "numeric",
+        "rating",
+        "file-upload"
+      ]
+    },
+    "description": {
+      "type": "string"
+    }
+  }
+}

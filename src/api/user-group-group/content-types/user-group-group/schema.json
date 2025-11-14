@@ -39,7 +39,7 @@
             {
               "var": "group_types"
             },
-            "user"
+            "group"
           ]
         }
       }
@@ -48,7 +48,7 @@
       "type": "enumeration",
       "enum": [
         "instructor",
-        "user"
+        "group"
       ]
     },
     "bio": {

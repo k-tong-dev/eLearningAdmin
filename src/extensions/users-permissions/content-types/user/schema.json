@@ -217,6 +217,20 @@
       "relation": "oneToMany",
       "target": "api::user-group-group.user-group-group",
       "mappedBy": "owner"
+    },
+    "user_group_member_limit": {
+      "type": "integer",
+      "default": 120
+    },
+    "instructor_group_member_limit": {
+      "type": "integer",
+      "default": 60
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "users"
     }
   }
 }

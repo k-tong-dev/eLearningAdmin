@@ -18,22 +18,22 @@
     },
     "request_type": {
       "type": "enumeration",
+      "default": "friend",
       "enum": [
         "instructor",
         "group",
         "friend"
-      ],
-      "default": "friend"
+      ]
     },
     "request_status": {
       "type": "enumeration",
+      "default": "pending",
       "enum": [
         "pending",
         "accepted",
         "rejected",
         "cancelled"
-      ],
-      "default": "pending"
+      ]
     },
     "to_instructor": {
       "type": "relation",
@@ -56,11 +56,11 @@
       "target": "plugin::users-permissions.user",
       "conditions": {
         "visible": {
-          "==": [
+          "!=": [
             {
               "var": "request_type"
             },
-            "friend"
+            "instructor"
           ]
         }
       }

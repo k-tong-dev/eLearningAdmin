@@ -22,7 +22,8 @@
       "default": "base",
       "enum": [
         "base",
-        "friend_extend"
+        "friend_extend",
+        "group"
       ]
     },
     "type": {
@@ -38,7 +39,7 @@
     "sequnce": {
       "type": "integer",
       "default": 1,
-      "unique": true
+      "unique": false
     },
     "price": {
       "type": "decimal",
@@ -121,6 +122,16 @@
     },
     "amount_group_allowed": {
       "type": "integer",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "group_plan"
+            },
+            "group"
+          ]
+        }
+      },
       "default": 50
     }
   }
