@@ -41,6 +41,12 @@
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user",
       "mappedBy": "company"
+    },
+    "certificates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::certificate-program.certificate-program",
+      "mappedBy": "company"
     }
   }
 }

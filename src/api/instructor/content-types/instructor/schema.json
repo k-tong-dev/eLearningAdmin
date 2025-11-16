@@ -208,6 +208,12 @@
         }
       },
       "mappedBy": "collaborated_instructors"
+    },
+    "course_contents": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-content.course-content",
+      "mappedBy": "instructor"
     }
   }
 }

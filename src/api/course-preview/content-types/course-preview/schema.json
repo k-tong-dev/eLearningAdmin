@@ -1,0 +1,79 @@
+{
+  "kind": "collectionType",
+  "collectionName": "course_previews",
+  "info": {
+    "singularName": "course-preview",
+    "pluralName": "course-previews",
+    "displayName": "Course Preview"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "types": {
+      "type": "enumeration",
+      "default": "image",
+      "enum": [
+        "image",
+        "url",
+        "video"
+      ]
+    },
+    "url": {
+      "type": "string",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "types"
+            },
+            "url"
+          ]
+        }
+      }
+    },
+    "video": {
+      "type": "media",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "types"
+            },
+            "video"
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "files",
+        "videos"
+      ]
+    },
+    "image": {
+      "type": "media",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "types"
+            },
+            "image"
+          ]
+        }
+      },
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files"
+      ]
+    },
+    "course_courses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-course.course-course",
+      "mappedBy": "course_preview"
+    }
+  }
+}

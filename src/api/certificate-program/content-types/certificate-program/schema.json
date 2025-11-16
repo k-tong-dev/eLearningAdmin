@@ -1,0 +1,59 @@
+{
+  "kind": "collectionType",
+  "collectionName": "certificate_programs",
+  "info": {
+    "singularName": "certificate-program",
+    "pluralName": "certificate-programs",
+    "displayName": "Certificate"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "candidates": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "certificates"
+    },
+    "course_quizs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-quiz.course-quiz",
+      "mappedBy": "certificate"
+    },
+    "course_content": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-content.course-content",
+      "inversedBy": "certificates"
+    },
+    "auto_issue": {
+      "type": "boolean",
+      "default": true
+    },
+    "min_score_to_pass": {
+      "type": "decimal",
+      "default": 0.7
+    },
+    "valid_until": {
+      "type": "datetime"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "certificates"
+    }
+  }
+}

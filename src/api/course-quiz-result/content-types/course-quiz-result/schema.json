@@ -1,0 +1,61 @@
+{
+  "kind": "collectionType",
+  "collectionName": "course_quiz_results",
+  "info": {
+    "singularName": "course-quiz-result",
+    "pluralName": "course-quiz-results",
+    "displayName": "Course Quiz Result"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "course_quiz": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-quiz.course-quiz",
+      "inversedBy": "course_quiz_results"
+    },
+    "candidate": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "total_score": {
+      "type": "decimal",
+      "default": 0
+    },
+    "corrected": {
+      "type": "integer",
+      "default": 0
+    },
+    "wronged": {
+      "type": "integer",
+      "default": 0
+    },
+    "final_point": {
+      "type": "decimal",
+      "default": 0
+    },
+    "content_progresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::content-progress.content-progress",
+      "mappedBy": "last_quiz_result"
+    },
+    "attempt_number": {
+      "type": "integer",
+      "default": 0
+    },
+    "started_at": {
+      "type": "date"
+    },
+    "completed_at": {
+      "type": "datetime"
+    },
+    "raw_answers": {
+      "type": "json"
+    }
+  }
+}

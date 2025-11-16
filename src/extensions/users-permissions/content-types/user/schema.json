@@ -231,6 +231,24 @@
       "relation": "manyToOne",
       "target": "api::company.company",
       "inversedBy": "users"
+    },
+    "certificates": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::certificate-program.certificate-program",
+      "mappedBy": "candidates"
+    },
+    "course_enrollments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-enrollment.course-enrollment",
+      "mappedBy": "user"
+    },
+    "content_progresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::content-progress.content-progress",
+      "mappedBy": "user"
     }
   }
 }

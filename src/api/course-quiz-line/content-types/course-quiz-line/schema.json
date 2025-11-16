@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "course_quiz_lines",
+  "info": {
+    "singularName": "course-quiz-line",
+    "pluralName": "course-quiz-lines",
+    "displayName": "Course Quiz Line"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "course_quiz": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-quiz.course-quiz",
+      "inversedBy": "course_quiz_lines"
+    },
+    "answer": {
+      "type": "string",
+      "required": true
+    },
+    "is_correct": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}

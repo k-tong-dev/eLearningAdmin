@@ -29,13 +29,175 @@
       "target": "api::course-material.course-material",
       "inversedBy": "course_contents"
     },
-    "course_course": {
+    "type": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "enum": [
+        "video",
+        "audio",
+        "document",
+        "url",
+        "article",
+        "image",
+        "quiz",
+        "certificate"
+      ]
+    },
+    "video": {
+      "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "video"
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "files",
+        "videos"
+      ]
+    },
+    "document": {
+      "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "document"
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "files"
+      ]
+    },
+    "url": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "url"
+          ]
+        }
+      }
+    },
+    "article": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "article"
+          ]
+        }
+      }
+    },
+    "audio": {
+      "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "audio"
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "audios"
+      ]
+    },
+    "course_quizs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-quiz.course-quiz",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "quiz"
+          ]
+        }
+      },
+      "mappedBy": "course_content"
+    },
+    "instructor": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::course-course.course-course",
+      "target": "api::instructor.instructor",
       "inversedBy": "course_contents"
     },
-    "is_paid": {
+    "certificates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::certificate-program.certificate-program",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "certificate"
+          ]
+        }
+      },
+      "mappedBy": "course_content"
+    },
+    "order_index": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": 0
+    },
+    "is_preview": {
       "type": "boolean",
       "pluginOptions": {
         "i18n": {
@@ -44,45 +206,104 @@
       },
       "default": false
     },
-    "price": {
-      "type": "decimal",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "default": 0
-    },
-    "currency": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::currency.currency"
-    },
-    "preview_duration": {
+    "estimated_minutes": {
       "type": "integer",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
+      },
+      "default": 0
+    },
+    "duration_seconds": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": 0
+    },
+    "url_provider": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "url"
+          ]
+        }
+      },
+      "enum": [
+        "youtube",
+        "vimeo",
+        "custom",
+        "unknown"
+      ]
+    },
+    "url_metadata": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "url"
+          ]
+        }
       }
     },
-    "purchase_count": {
-      "type": "decimal",
+    "url_checked_at": {
+      "type": "datetime",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "default": 0
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "url"
+          ]
+        }
+      }
     },
-    "revenue_generated": {
-      "type": "decimal",
+    "can_track_progress": {
+      "type": "boolean",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "default": 0
+      "default": false
+    },
+    "quiz_sections": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::quiz-section.quiz-section",
+      "mappedBy": "course_content"
+    },
+    "content_progresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::content-progress.content-progress",
+      "mappedBy": "course_content"
     }
   }
 }

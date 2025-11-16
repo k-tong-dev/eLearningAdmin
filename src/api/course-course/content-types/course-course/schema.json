@@ -23,6 +23,25 @@
         }
       }
     },
+    "course_status": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": "draft",
+      "enum": [
+        "cancel",
+        "draft",
+        "published"
+      ]
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company"
+    },
     "instructor": {
       "type": "relation",
       "relation": "manyToOne",
@@ -76,12 +95,6 @@
       },
       "default": false
     },
-    "course_contents": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::course-content.course-content",
-      "mappedBy": "course_course"
-    },
     "description": {
       "type": "richtext",
       "pluginOptions": {
@@ -98,14 +111,6 @@
         }
       },
       "default": false
-    },
-    "preview_url": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
     },
     "purchase_count": {
       "type": "integer",
@@ -125,8 +130,116 @@
       },
       "default": 0
     },
-    "preview_duration": {
+    "purchase_transactions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::purchase-transaction.purchase-transaction",
+      "mappedBy": "course_course"
+    },
+    "course_preview": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-preview.course-preview",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "preview_available"
+            },
+            true
+          ]
+        }
+      },
+      "inversedBy": "course_courses"
+    },
+    "course_badges": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-badge.course-badge"
+    },
+    "relevant_skills": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::skill.skill"
+    },
+    "discount_type": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "is_paid"
+            },
+            true
+          ]
+        }
+      },
+      "required": false,
+      "enum": [
+        "percetage",
+        "fix_price"
+      ]
+    },
+    "discount_percetage": {
       "type": "decimal",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "discount_type"
+            },
+            "percetage"
+          ]
+        }
+      },
+      "default": 0
+    },
+    "discount_fix_price": {
+      "type": "decimal",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "discount_type"
+            },
+            "fix_price"
+          ]
+        }
+      },
+      "default": 0
+    },
+    "course_materials": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-material.course-material",
+      "mappedBy": "course_course"
+    },
+    "active": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": true
+    },
+    "enrollment_count": {
+      "type": "integer",
       "pluginOptions": {
         "i18n": {
           "localized": true
@@ -134,10 +247,19 @@
       },
       "default": 0
     },
-    "purchase_transactions": {
+    "can_edit_after_publish": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": false
+    },
+    "enrollments": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::purchase-transaction.purchase-transaction",
+      "target": "api::course-enrollment.course-enrollment",
       "mappedBy": "course_course"
     }
   }

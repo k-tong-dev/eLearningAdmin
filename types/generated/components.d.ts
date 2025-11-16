@@ -62,6 +62,14 @@ export interface SharedSlider extends Struct.ComponentSchema {
   };
 }
 
+export interface SharedTestFieldComponent extends Struct.ComponentSchema {
+  collectionName: 'components_shared_test_field_components';
+  info: {
+    displayName: 'Test Field Component';
+  };
+  attributes: {};
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -70,6 +78,7 @@ declare module '@strapi/strapi' {
       'shared.rich-text': SharedRichText;
       'shared.seo': SharedSeo;
       'shared.slider': SharedSlider;
+      'shared.test-field-component': SharedTestFieldComponent;
     }
   }
 }

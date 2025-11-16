@@ -23,71 +23,20 @@
         }
       }
     },
-    "type": {
-      "type": "enumeration",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "default": "Video",
-      "enum": [
-        "Video",
-        "PDF",
-        "URL",
-        "Free Text"
-      ]
+    "course_course": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-course.course-course",
+      "inversedBy": "course_materials"
     },
-    "url": {
-      "type": "string",
+    "active": {
+      "type": "boolean",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "conditions": {
-        "visible": {
-          "==": [
-            {
-              "var": "type"
-            },
-            "URL"
-          ]
-        }
-      }
-    },
-    "media": {
-      "type": "media",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "multiple": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
-    "free_text": {
-      "type": "richtext",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "conditions": {
-        "visible": {
-          "==": [
-            {
-              "var": "type"
-            },
-            "Free Text"
-          ]
-        }
-      }
+      "default": true
     },
     "course_contents": {
       "type": "relation",
@@ -95,14 +44,31 @@
       "target": "api::course-content.course-content",
       "mappedBy": "course_material"
     },
-    "price": {
-      "type": "decimal",
+    "description": {
+      "type": "richtext",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "order_index": {
+      "type": "integer",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
       "default": 0
+    },
+    "is_locked": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": false
     }
   }
 }

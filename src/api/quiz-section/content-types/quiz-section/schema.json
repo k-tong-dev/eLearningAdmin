@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "quiz_sections",
+  "info": {
+    "singularName": "quiz-section",
+    "pluralName": "quiz-sections",
+    "displayName": "Course Quiz Section"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "order_index": {
+      "type": "integer",
+      "default": 0
+    },
+    "course_content": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-content.course-content",
+      "inversedBy": "quiz_sections"
+    },
+    "course_quizs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-quiz.course-quiz",
+      "mappedBy": "quiz_section"
+    }
+  }
+}

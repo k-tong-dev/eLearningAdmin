@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "course_enrollments",
+  "info": {
+    "singularName": "course-enrollment",
+    "pluralName": "course-enrollments",
+    "displayName": "Course Enrollment"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "course_enrollments"
+    },
+    "course_course": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-course.course-course",
+      "inversedBy": "enrollments"
+    },
+    "enroll_status": {
+      "type": "enumeration",
+      "default": "active",
+      "enum": [
+        "active",
+        "completed",
+        "cancelled",
+        "refunded"
+      ]
+    },
+    "started_at": {
+      "type": "datetime"
+    },
+    "completed_at": {
+      "type": "datetime"
+    },
+    "progress_percent": {
+      "type": "decimal",
+      "default": 0
+    },
+    "is_owner": {
+      "type": "boolean",
+      "default": false
+    },
+    "content_progresses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::content-progress.content-progress",
+      "mappedBy": "course_enrollment"
+    }
+  }
+}

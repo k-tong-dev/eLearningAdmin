@@ -17,20 +17,86 @@
     },
     "type": {
       "type": "enumeration",
-      "default": "multiple-choice",
+      "default": "check-box",
       "enum": [
-        "multiple-choice",
-        "true-false",
-        "fill-in-the-blank",
-        "short-answer",
-        "matching",
-        "numeric",
-        "rating",
-        "file-upload"
+        "check-box",
+        "radio",
+        "true-false"
       ]
     },
     "description": {
       "type": "string"
+    },
+    "course_content": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-content.course-content",
+      "inversedBy": "course_quizs"
+    },
+    "course_quiz_lines": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-quiz-line.course-quiz-line",
+      "mappedBy": "course_quiz"
+    },
+    "duration": {
+      "type": "integer",
+      "default": 0
+    },
+    "is_require": {
+      "type": "boolean",
+      "default": true
+    },
+    "min_answer": {
+      "type": "integer",
+      "default": 1
+    },
+    "max_answer": {
+      "type": "integer",
+      "default": 0
+    },
+    "candidates": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user"
+    },
+    "candidate_completed": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user"
+    },
+    "total_score": {
+      "type": "decimal",
+      "default": 0
+    },
+    "course_quiz_results": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-quiz-result.course-quiz-result",
+      "mappedBy": "course_quiz"
+    },
+    "certificate": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::certificate-program.certificate-program",
+      "inversedBy": "course_quizs"
+    },
+    "quiz_section": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::quiz-section.quiz-section",
+      "inversedBy": "course_quizs"
+    },
+    "question_text": {
+      "type": "richtext"
+    },
+    "order_index": {
+      "type": "integer",
+      "default": 0
+    },
+    "max_score": {
+      "type": "integer",
+      "default": 1
     }
   }
 }

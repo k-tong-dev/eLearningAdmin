@@ -1,0 +1,70 @@
+{
+  "kind": "collectionType",
+  "collectionName": "content_progresses",
+  "info": {
+    "singularName": "content-progress",
+    "pluralName": "content-progresses",
+    "displayName": "Content Progress"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "content_progresses"
+    },
+    "course_enrollment": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-enrollment.course-enrollment",
+      "inversedBy": "content_progresses"
+    },
+    "course_content": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-content.course-content",
+      "inversedBy": "content_progresses"
+    },
+    "tracking_status": {
+      "type": "enumeration",
+      "default": "not_started",
+      "enum": [
+        "not_started",
+        "in_progress",
+        "completed"
+      ]
+    },
+    "last_position_seconds": {
+      "type": "decimal",
+      "default": 0
+    },
+    "duration_seconds": {
+      "type": "decimal",
+      "default": 0
+    },
+    "watched_percent": {
+      "type": "decimal",
+      "default": 0
+    },
+    "last_quiz_result": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-quiz-result.course-quiz-result",
+      "inversedBy": "content_progresses"
+    },
+    "attempt_count": {
+      "type": "integer",
+      "default": 0
+    },
+    "first_started_at": {
+      "type": "datetime"
+    },
+    "last_updated_at": {
+      "type": "datetime"
+    }
+  }
+}
