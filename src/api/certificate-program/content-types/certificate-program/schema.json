@@ -4,7 +4,7 @@
   "info": {
     "singularName": "certificate-program",
     "pluralName": "certificate-programs",
-    "displayName": "Certificate"
+    "displayName": "Certificate Program"
   },
   "options": {
     "draftAndPublish": true
@@ -54,6 +54,57 @@
       "relation": "manyToOne",
       "target": "api::company.company",
       "inversedBy": "certificates"
+    },
+    "message": {
+      "type": "string"
+    },
+    "issue_criterial": {
+      "type": "string"
+    },
+    "theme": {
+      "type": "enumeration",
+      "default": "Aurora",
+      "enum": [
+        "Aurora",
+        "Minimal",
+        "Premium",
+        "Classic"
+      ]
+    },
+    "signature_name": {
+      "type": "string"
+    },
+    "issuer": {
+      "type": "string"
+    },
+    "include_seal": {
+      "type": "boolean",
+      "default": true
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "quiz_attempts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::quiz-attempt.quiz-attempt",
+      "mappedBy": "certificate_program"
+    },
+    "quiz_attempt": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::quiz-attempt.quiz-attempt",
+      "inversedBy": "issued_certificate"
+    },
+    "certificate_issuances": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::certificate-issuance.certificate-issuance",
+      "mappedBy": "certificate_program"
+    },
+    "color": {
+      "type": "string"
     }
   }
 }

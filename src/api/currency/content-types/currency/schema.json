@@ -17,6 +17,14 @@
     "code": {
       "type": "string",
       "unique": true
+    },
+    "rate": {
+      "type": "decimal",
+      "default": 0
+    },
+    "is_default": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

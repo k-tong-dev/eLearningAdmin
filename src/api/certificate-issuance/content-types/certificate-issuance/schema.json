@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "certificate_issuances",
+  "info": {
+    "singularName": "certificate-issuance",
+    "pluralName": "certificate-issuances",
+    "displayName": "Certificate Issuance"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "certificate_program": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::certificate-program.certificate-program",
+      "inversedBy": "certificate_issuances"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "quiz_attempt": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::quiz-attempt.quiz-attempt",
+      "inversedBy": "certificate_issuance"
+    },
+    "issued_at": {
+      "type": "datetime"
+    },
+    "valid_until": {
+      "type": "datetime"
+    },
+    "revoked_at": {
+      "type": "datetime"
+    },
+    "issuance_status": {
+      "type": "enumeration",
+      "enum": [
+        "active",
+        "expired",
+        "revoked"
+      ]
+    },
+    "metadata": {
+      "type": "json"
+    }
+  }
+}

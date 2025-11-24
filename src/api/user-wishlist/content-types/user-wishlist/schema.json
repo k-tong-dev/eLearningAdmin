@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_wishlists",
+  "info": {
+    "singularName": "user-wishlist",
+    "pluralName": "user-wishlists",
+    "displayName": "User Wishlist"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "course_course": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::course-course.course-course"
+    }
+  }
+}

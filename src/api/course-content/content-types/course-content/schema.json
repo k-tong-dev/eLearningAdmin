@@ -98,16 +98,6 @@
         "i18n": {
           "localized": true
         }
-      },
-      "conditions": {
-        "visible": {
-          "==": [
-            {
-              "var": "type"
-            },
-            "url"
-          ]
-        }
       }
     },
     "article": {
@@ -297,6 +287,16 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::quiz-section.quiz-section",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "quiz"
+          ]
+        }
+      },
       "mappedBy": "course_content"
     },
     "content_progresses": {
@@ -304,6 +304,110 @@
       "relation": "oneToMany",
       "target": "api::content-progress.content-progress",
       "mappedBy": "course_content"
+    },
+    "images": {
+      "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "type"
+            },
+            "image"
+          ]
+        }
+      },
+      "multiple": true,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "quiz_attempts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::quiz-attempt.quiz-attempt",
+      "mappedBy": "course_content"
+    },
+    "copyright_check_status": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": "pending",
+      "enum": [
+        "pending",
+        "checking",
+        "passed",
+        "failed",
+        "warning",
+        "manual_review"
+      ]
+    },
+    "copyright_check_result": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "copyright_check_date": {
+      "type": "datetime",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "copyright_check_provider": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "copyright_violations": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "copyright_warnings": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "video_fingerprint": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "copyright_check_metadata": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }

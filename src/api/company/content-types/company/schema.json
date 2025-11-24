@@ -47,6 +47,24 @@
       "relation": "oneToMany",
       "target": "api::certificate-program.certificate-program",
       "mappedBy": "company"
+    },
+    "phone": {
+      "type": "biginteger"
+    },
+    "email": {
+      "type": "string"
+    },
+    "kind_business": {
+      "type": "string"
+    },
+    "company_registry": {
+      "type": "string"
+    },
+    "verified": {
+      "type": "boolean"
+    },
+    "logoUrl": {
+      "type": "string"
     }
   }
 }

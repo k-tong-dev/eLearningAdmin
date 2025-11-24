@@ -97,6 +97,12 @@
     "max_score": {
       "type": "integer",
       "default": 1
+    },
+    "quiz_attempt_answers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::quiz-attempt-answer.quiz-attempt-answer",
+      "mappedBy": "course_quiz"
     }
   }
 }

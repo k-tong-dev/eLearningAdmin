@@ -1,0 +1,81 @@
+{
+  "kind": "collectionType",
+  "collectionName": "quiz_attempts",
+  "info": {
+    "singularName": "quiz-attempt",
+    "pluralName": "quiz-attempts",
+    "displayName": "Quiz Attempt"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "certificate_program": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::certificate-program.certificate-program",
+      "inversedBy": "quiz_attempts"
+    },
+    "course_content": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-content.course-content",
+      "inversedBy": "quiz_attempts"
+    },
+    "issued_certificate": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::certificate-program.certificate-program",
+      "mappedBy": "quiz_attempt"
+    },
+    "attempt_status": {
+      "type": "enumeration",
+      "default": "in_progress",
+      "enum": [
+        "in_progress",
+        "submitted",
+        "graded"
+      ]
+    },
+    "score": {
+      "type": "integer",
+      "default": 0
+    },
+    "max_score": {
+      "type": "integer",
+      "default": 0
+    },
+    "started_at": {
+      "type": "datetime"
+    },
+    "completed_at": {
+      "type": "datetime"
+    },
+    "duration_seconds": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
+    "metadata": {
+      "type": "json"
+    },
+    "quiz_attempt_answers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::quiz-attempt-answer.quiz-attempt-answer",
+      "mappedBy": "quiz_attempt"
+    },
+    "certificate_issuance": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::certificate-issuance.certificate-issuance",
+      "mappedBy": "quiz_attempt"
+    }
+  }
+}

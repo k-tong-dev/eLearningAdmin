@@ -249,6 +249,12 @@
       "relation": "oneToMany",
       "target": "api::content-progress.content-progress",
       "mappedBy": "user"
+    },
+    "course_courses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-course.course-course",
+      "mappedBy": "owner"
     }
   }
 }

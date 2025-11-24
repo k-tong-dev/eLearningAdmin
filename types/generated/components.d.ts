@@ -1,5 +1,26 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface SharedCopyRight extends Struct.ComponentSchema {
+  collectionName: 'components_shared_copy_rights';
+  info: {
+    displayName: 'Copy Right Information';
+    icon: 'check';
+  };
+  attributes: {
+    copy_right_status: Schema.Attribute.Enumeration<
+      ['pending', 'checking', 'passed', 'failed', 'warning', 'manual_review']
+    > &
+      Schema.Attribute.DefaultTo<'pending'>;
+    copyright_check_date: Schema.Attribute.DateTime;
+    copyright_check_metadata: Schema.Attribute.JSON;
+    copyright_check_provider: Schema.Attribute.JSON;
+    copyright_check_result: Schema.Attribute.JSON;
+    copyright_violations: Schema.Attribute.JSON;
+    copyright_warnings: Schema.Attribute.JSON;
+    video_fingerprint: Schema.Attribute.String;
+  };
+}
+
 export interface SharedMedia extends Struct.ComponentSchema {
   collectionName: 'components_shared_media';
   info: {
@@ -62,23 +83,15 @@ export interface SharedSlider extends Struct.ComponentSchema {
   };
 }
 
-export interface SharedTestFieldComponent extends Struct.ComponentSchema {
-  collectionName: 'components_shared_test_field_components';
-  info: {
-    displayName: 'Test Field Component';
-  };
-  attributes: {};
-}
-
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'shared.copy-right': SharedCopyRight;
       'shared.media': SharedMedia;
       'shared.quote': SharedQuote;
       'shared.rich-text': SharedRichText;
       'shared.seo': SharedSeo;
       'shared.slider': SharedSlider;
-      'shared.test-field-component': SharedTestFieldComponent;
     }
   }
 }

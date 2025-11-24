@@ -33,6 +33,29 @@
         }
       }
     },
+    "course_courses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-course.course-course",
+      "mappedBy": "course_preview"
+    },
+    "image": {
+      "type": "media",
+      "conditions": {
+        "visible": {
+          "==": [
+            {
+              "var": "types"
+            },
+            "image"
+          ]
+        }
+      },
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
     "video": {
       "type": "media",
       "conditions": {
@@ -47,33 +70,8 @@
       },
       "multiple": false,
       "allowedTypes": [
-        "files",
         "videos"
       ]
-    },
-    "image": {
-      "type": "media",
-      "conditions": {
-        "visible": {
-          "==": [
-            {
-              "var": "types"
-            },
-            "image"
-          ]
-        }
-      },
-      "multiple": true,
-      "allowedTypes": [
-        "images",
-        "files"
-      ]
-    },
-    "course_courses": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::course-course.course-course",
-      "mappedBy": "course_preview"
     }
   }
 }

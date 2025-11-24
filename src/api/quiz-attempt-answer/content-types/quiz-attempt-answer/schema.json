@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "quiz_attempt_answers",
+  "info": {
+    "singularName": "quiz-attempt-answer",
+    "pluralName": "quiz-attempt-answers",
+    "displayName": "Quiz Attempt Answer"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "quiz_attempt": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::quiz-attempt.quiz-attempt",
+      "inversedBy": "quiz_attempt_answers"
+    },
+    "course_quiz": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-quiz.course-quiz",
+      "inversedBy": "quiz_attempt_answers"
+    },
+    "selected_line": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-quiz-line.course-quiz-line",
+      "inversedBy": "quiz_attempt_answers"
+    },
+    "selected_lines": {
+      "type": "json"
+    },
+    "is_correct": {
+      "type": "boolean",
+      "default": false
+    },
+    "points_awarded": {
+      "type": "decimal",
+      "default": 0
+    }
+  }
+}

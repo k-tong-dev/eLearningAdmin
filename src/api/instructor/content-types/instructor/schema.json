@@ -166,12 +166,6 @@
       },
       "default": 0
     },
-    "course_courses": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::course-course.course-course",
-      "mappedBy": "instructor"
-    },
     "is_active": {
       "type": "boolean",
       "pluginOptions": {

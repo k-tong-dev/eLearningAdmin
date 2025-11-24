@@ -1,0 +1,44 @@
+{
+  "collectionName": "components_shared_copy_rights",
+  "info": {
+    "displayName": "Copy Right Information",
+    "icon": "check"
+  },
+  "options": {},
+  "attributes": {
+    "copy_right_status": {
+      "type": "enumeration",
+      "default": "pending",
+      "enum": [
+        "pending",
+        "checking",
+        "passed",
+        "failed",
+        "warning",
+        "manual_review"
+      ]
+    },
+    "copyright_check_result": {
+      "type": "json"
+    },
+    "copyright_check_date": {
+      "type": "datetime"
+    },
+    "copyright_check_provider": {
+      "type": "json"
+    },
+    "copyright_violations": {
+      "type": "json"
+    },
+    "copyright_warnings": {
+      "type": "json"
+    },
+    "video_fingerprint": {
+      "type": "string"
+    },
+    "copyright_check_metadata": {
+      "type": "json"
+    }
+  },
+  "config": {}
+}

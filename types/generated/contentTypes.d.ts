@@ -513,6 +513,10 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
       ['shared.media', 'shared.quote', 'shared.rich-text', 'shared.slider']
     >;
     category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
+    copy_right_information: Schema.Attribute.Component<
+      'shared.copy-right',
+      true
+    >;
     cover: Schema.Attribute.Media<'images' | 'files' | 'videos'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -626,11 +630,58 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCertificateIssuanceCertificateIssuance
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'certificate_issuances';
+  info: {
+    displayName: 'Certificate Issuance';
+    pluralName: 'certificate-issuances';
+    singularName: 'certificate-issuance';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    certificate_program: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::certificate-program.certificate-program'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    issuance_status: Schema.Attribute.Enumeration<
+      ['active', 'expired', 'revoked']
+    >;
+    issued_at: Schema.Attribute.DateTime;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::certificate-issuance.certificate-issuance'
+    > &
+      Schema.Attribute.Private;
+    metadata: Schema.Attribute.JSON;
+    publishedAt: Schema.Attribute.DateTime;
+    quiz_attempt: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::quiz-attempt.quiz-attempt'
+    >;
+    revoked_at: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    valid_until: Schema.Attribute.DateTime;
+  };
+}
+
 export interface ApiCertificateProgramCertificateProgram
   extends Struct.CollectionTypeSchema {
   collectionName: 'certificate_programs';
   info: {
-    displayName: 'Certificate';
+    displayName: 'Certificate Program';
     pluralName: 'certificate-programs';
     singularName: 'certificate-program';
   };
@@ -638,11 +689,17 @@ export interface ApiCertificateProgramCertificateProgram
     draftAndPublish: true;
   };
   attributes: {
+    active: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     auto_issue: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     candidates: Schema.Attribute.Relation<
       'manyToMany',
       'plugin::users-permissions.user'
     >;
+    certificate_issuances: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::certificate-issuance.certificate-issuance'
+    >;
+    color: Schema.Attribute.String;
     company: Schema.Attribute.Relation<'manyToOne', 'api::company.company'>;
     course_content: Schema.Attribute.Relation<
       'manyToOne',
@@ -655,12 +712,16 @@ export interface ApiCertificateProgramCertificateProgram
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    include_seal: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    issue_criterial: Schema.Attribute.String;
+    issuer: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::certificate-program.certificate-program'
     > &
       Schema.Attribute.Private;
+    message: Schema.Attribute.String;
     min_score_to_pass: Schema.Attribute.Decimal &
       Schema.Attribute.DefaultTo<0.7>;
     name: Schema.Attribute.String & Schema.Attribute.Required;
@@ -669,6 +730,19 @@ export interface ApiCertificateProgramCertificateProgram
       'plugin::users-permissions.user'
     >;
     publishedAt: Schema.Attribute.DateTime;
+    quiz_attempt: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::quiz-attempt.quiz-attempt'
+    >;
+    quiz_attempts: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::quiz-attempt.quiz-attempt'
+    >;
+    signature_name: Schema.Attribute.String;
+    theme: Schema.Attribute.Enumeration<
+      ['Aurora', 'Minimal', 'Premium', 'Classic']
+    > &
+      Schema.Attribute.DefaultTo<'Aurora'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -748,11 +822,14 @@ export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::certificate-program.certificate-program'
     >;
+    company_registry: Schema.Attribute.String;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    email: Schema.Attribute.String;
     founded_year: Schema.Attribute.Date;
     industry: Schema.Attribute.String;
+    kind_business: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -760,7 +837,9 @@ export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     logo: Schema.Attribute.Media<'images'>;
+    logoUrl: Schema.Attribute.String;
     name: Schema.Attribute.String;
+    phone: Schema.Attribute.BigInteger;
     publishedAt: Schema.Attribute.DateTime;
     revenue: Schema.Attribute.Decimal;
     updatedAt: Schema.Attribute.DateTime;
@@ -770,6 +849,7 @@ export interface ApiCompanyCompany extends Struct.CollectionTypeSchema {
       'oneToMany',
       'plugin::users-permissions.user'
     >;
+    verified: Schema.Attribute.Boolean;
     website: Schema.Attribute.String;
   };
 }
@@ -991,6 +1071,51 @@ export interface ApiCourseContentCourseContent
       'oneToMany',
       'api::content-progress.content-progress'
     >;
+    copyright_check_date: Schema.Attribute.DateTime &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    copyright_check_metadata: Schema.Attribute.JSON &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    copyright_check_provider: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    copyright_check_result: Schema.Attribute.JSON &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    copyright_check_status: Schema.Attribute.Enumeration<
+      ['pending', 'checking', 'passed', 'failed', 'warning', 'manual_review']
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'pending'>;
+    copyright_violations: Schema.Attribute.JSON &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    copyright_warnings: Schema.Attribute.JSON &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     course_material: Schema.Attribute.Relation<
       'manyToOne',
       'api::course-material.course-material'
@@ -1022,6 +1147,15 @@ export interface ApiCourseContentCourseContent
         };
       }> &
       Schema.Attribute.DefaultTo<0>;
+    images: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     instructor: Schema.Attribute.Relation<
       'manyToOne',
       'api::instructor.instructor'
@@ -1052,6 +1186,10 @@ export interface ApiCourseContentCourseContent
       }> &
       Schema.Attribute.DefaultTo<0>;
     publishedAt: Schema.Attribute.DateTime;
+    quiz_attempts: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::quiz-attempt.quiz-attempt'
+    >;
     quiz_sections: Schema.Attribute.Relation<
       'oneToMany',
       'api::quiz-section.quiz-section'
@@ -1103,6 +1241,12 @@ export interface ApiCourseContentCourseContent
         };
       }>;
     video: Schema.Attribute.Media<'files' | 'videos'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    video_fingerprint: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -1163,6 +1307,10 @@ export interface ApiCourseCourseCourseCourse
       'manyToOne',
       'api::course-preview.course-preview'
     >;
+    course_reviewers: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::course-reviewer.course-reviewer'
+    >;
     course_status: Schema.Attribute.Enumeration<
       ['cancel', 'draft', 'published']
     > &
@@ -1193,14 +1341,14 @@ export interface ApiCourseCourseCourseCourse
         };
       }> &
       Schema.Attribute.DefaultTo<0>;
-    discount_percetage: Schema.Attribute.Decimal &
+    discount_percentage: Schema.Attribute.Decimal &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }> &
       Schema.Attribute.DefaultTo<0>;
-    discount_type: Schema.Attribute.Enumeration<['percetage', 'fix_price']> &
+    discount_type: Schema.Attribute.Enumeration<['percentage', 'fix_price']> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -1224,8 +1372,8 @@ export interface ApiCourseCourseCourseCourse
       'oneToMany',
       'api::course-enrollment.course-enrollment'
     >;
-    instructor: Schema.Attribute.Relation<
-      'manyToOne',
+    instructors: Schema.Attribute.Relation<
+      'oneToMany',
       'api::instructor.instructor'
     >;
     is_paid: Schema.Attribute.Boolean &
@@ -1246,6 +1394,10 @@ export interface ApiCourseCourseCourseCourse
           localized: true;
         };
       }>;
+    owner: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     preview_available: Schema.Attribute.Boolean &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -1463,7 +1615,7 @@ export interface ApiCoursePreviewCoursePreview
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    image: Schema.Attribute.Media<'images' | 'files', true>;
+    image: Schema.Attribute.Media<'images'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1477,7 +1629,7 @@ export interface ApiCoursePreviewCoursePreview
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     url: Schema.Attribute.String;
-    video: Schema.Attribute.Media<'files' | 'videos'>;
+    video: Schema.Attribute.Media<'videos'>;
   };
 }
 
@@ -1509,6 +1661,10 @@ export interface ApiCourseQuizLineCourseQuizLine
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    quiz_attempt_answers: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::quiz-attempt-answer.quiz-attempt-answer'
+    >;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1616,6 +1772,10 @@ export interface ApiCourseQuizCourseQuiz extends Struct.CollectionTypeSchema {
     order_index: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
     publishedAt: Schema.Attribute.DateTime;
     question_text: Schema.Attribute.RichText;
+    quiz_attempt_answers: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::quiz-attempt-answer.quiz-attempt-answer'
+    >;
     quiz_section: Schema.Attribute.Relation<
       'manyToOne',
       'api::quiz-section.quiz-section'
@@ -1627,6 +1787,51 @@ export interface ApiCourseQuizCourseQuiz extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiCourseReviewerCourseReviewer
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'course_reviewers';
+  info: {
+    displayName: 'Course Reviewer';
+    pluralName: 'course-reviewers';
+    singularName: 'course-reviewer';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    course_course: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::course-course.course-course'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::course-reviewer.course-reviewer'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    rating_stars: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -1684,6 +1889,7 @@ export interface ApiCurrencyCurrency extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    is_default: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1692,6 +1898,7 @@ export interface ApiCurrencyCurrency extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     name: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    rate: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1879,10 +2086,6 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
     course_contents: Schema.Attribute.Relation<
       'oneToMany',
       'api::course-content.course-content'
-    >;
-    course_courses: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::course-course.course-course'
     >;
     cover: Schema.Attribute.Media<'images' | 'files'> &
       Schema.Attribute.SetPluginOptions<{
@@ -2358,6 +2561,117 @@ export interface ApiPurchaseTransactionPurchaseTransaction
       Schema.Attribute.Private;
     user: Schema.Attribute.Relation<
       'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
+export interface ApiQuizAttemptAnswerQuizAttemptAnswer
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'quiz_attempt_answers';
+  info: {
+    displayName: 'Quiz Attempt Answer';
+    pluralName: 'quiz-attempt-answers';
+    singularName: 'quiz-attempt-answer';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    course_quiz: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::course-quiz.course-quiz'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    is_correct: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::quiz-attempt-answer.quiz-attempt-answer'
+    > &
+      Schema.Attribute.Private;
+    points_awarded: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
+    publishedAt: Schema.Attribute.DateTime;
+    quiz_attempt: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::quiz-attempt.quiz-attempt'
+    >;
+    selected_line: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::course-quiz-line.course-quiz-line'
+    >;
+    selected_lines: Schema.Attribute.JSON;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiQuizAttemptQuizAttempt extends Struct.CollectionTypeSchema {
+  collectionName: 'quiz_attempts';
+  info: {
+    displayName: 'Quiz Attempt';
+    pluralName: 'quiz-attempts';
+    singularName: 'quiz-attempt';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    attempt_status: Schema.Attribute.Enumeration<
+      ['in_progress', 'submitted', 'graded']
+    > &
+      Schema.Attribute.DefaultTo<'in_progress'>;
+    certificate_issuance: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::certificate-issuance.certificate-issuance'
+    >;
+    certificate_program: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::certificate-program.certificate-program'
+    >;
+    completed_at: Schema.Attribute.DateTime;
+    course_content: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::course-content.course-content'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    duration_seconds: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 0;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<0>;
+    issued_certificate: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::certificate-program.certificate-program'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::quiz-attempt.quiz-attempt'
+    > &
+      Schema.Attribute.Private;
+    max_score: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    metadata: Schema.Attribute.JSON;
+    publishedAt: Schema.Attribute.DateTime;
+    quiz_attempt_answers: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::quiz-attempt-answer.quiz-attempt-answer'
+    >;
+    score: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    started_at: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
       'plugin::users-permissions.user'
     >;
   };
@@ -2956,6 +3270,42 @@ export interface ApiUserSubscriptionUserSubscription
   };
 }
 
+export interface ApiUserWishlistUserWishlist
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'user_wishlists';
+  info: {
+    displayName: 'User Wishlist';
+    pluralName: 'user-wishlists';
+    singularName: 'user-wishlist';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    course_course: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::course-course.course-course'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-wishlist.user-wishlist'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface PluginContentReleasesRelease
   extends Struct.CollectionTypeSchema {
   collectionName: 'strapi_releases';
@@ -3433,6 +3783,10 @@ export interface PluginUsersPermissionsUser
       'oneToMany',
       'api::content-progress.content-progress'
     >;
+    course_courses: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::course-course.course-course'
+    >;
     course_enrollments: Schema.Attribute.Relation<
       'oneToMany',
       'api::course-enrollment.course-enrollment'
@@ -3559,6 +3913,7 @@ declare module '@strapi/strapi' {
       'api::author.author': ApiAuthorAuthor;
       'api::badge.badge': ApiBadgeBadge;
       'api::category.category': ApiCategoryCategory;
+      'api::certificate-issuance.certificate-issuance': ApiCertificateIssuanceCertificateIssuance;
       'api::certificate-program.certificate-program': ApiCertificateProgramCertificateProgram;
       'api::charactor.charactor': ApiCharactorCharactor;
       'api::company.company': ApiCompanyCompany;
@@ -3575,6 +3930,7 @@ declare module '@strapi/strapi' {
       'api::course-quiz-line.course-quiz-line': ApiCourseQuizLineCourseQuizLine;
       'api::course-quiz-result.course-quiz-result': ApiCourseQuizResultCourseQuizResult;
       'api::course-quiz.course-quiz': ApiCourseQuizCourseQuiz;
+      'api::course-reviewer.course-reviewer': ApiCourseReviewerCourseReviewer;
       'api::course-tage.course-tage': ApiCourseTageCourseTage;
       'api::currency.currency': ApiCurrencyCurrency;
       'api::forum-forum.forum-forum': ApiForumForumForumForum;
@@ -3587,6 +3943,8 @@ declare module '@strapi/strapi' {
       'api::payment-method.payment-method': ApiPaymentMethodPaymentMethod;
       'api::prefer-to-learn.prefer-to-learn': ApiPreferToLearnPreferToLearn;
       'api::purchase-transaction.purchase-transaction': ApiPurchaseTransactionPurchaseTransaction;
+      'api::quiz-attempt-answer.quiz-attempt-answer': ApiQuizAttemptAnswerQuizAttemptAnswer;
+      'api::quiz-attempt.quiz-attempt': ApiQuizAttemptQuizAttempt;
       'api::quiz-section.quiz-section': ApiQuizSectionQuizSection;
       'api::report-content-type.report-content-type': ApiReportContentTypeReportContentType;
       'api::report-issue.report-issue': ApiReportIssueReportIssue;
@@ -3599,6 +3957,7 @@ declare module '@strapi/strapi' {
       'api::user-group-group.user-group-group': ApiUserGroupGroupUserGroupGroup;
       'api::user-request-request.user-request-request': ApiUserRequestRequestUserRequestRequest;
       'api::user-subscription.user-subscription': ApiUserSubscriptionUserSubscription;
+      'api::user-wishlist.user-wishlist': ApiUserWishlistUserWishlist;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

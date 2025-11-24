@@ -24,6 +24,12 @@
     "is_correct": {
       "type": "boolean",
       "default": false
+    },
+    "quiz_attempt_answers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::quiz-attempt-answer.quiz-attempt-answer",
+      "mappedBy": "selected_line"
     }
   }
 }

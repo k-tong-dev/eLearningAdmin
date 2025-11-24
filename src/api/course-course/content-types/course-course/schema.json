@@ -23,6 +23,12 @@
         }
       }
     },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "course_courses"
+    },
     "course_status": {
       "type": "enumeration",
       "pluginOptions": {
@@ -42,11 +48,10 @@
       "relation": "oneToOne",
       "target": "api::company.company"
     },
-    "instructor": {
+    "instructors": {
       "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::instructor.instructor",
-      "inversedBy": "course_courses"
+      "relation": "oneToMany",
+      "target": "api::instructor.instructor"
     },
     "Price": {
       "type": "decimal",
@@ -181,11 +186,11 @@
       },
       "required": false,
       "enum": [
-        "percetage",
+        "percentage",
         "fix_price"
       ]
     },
-    "discount_percetage": {
+    "discount_percentage": {
       "type": "decimal",
       "pluginOptions": {
         "i18n": {
@@ -198,7 +203,7 @@
             {
               "var": "discount_type"
             },
-            "percetage"
+            "percentage"
           ]
         }
       },
@@ -260,6 +265,12 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::course-enrollment.course-enrollment",
+      "mappedBy": "course_course"
+    },
+    "course_reviewers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-reviewer.course-reviewer",
       "mappedBy": "course_course"
     }
   }

@@ -53,6 +53,11 @@
         "shared.rich-text",
         "shared.slider"
       ]
+    },
+    "copy_right_information": {
+      "type": "component",
+      "component": "shared.copy-right",
+      "repeatable": true
     }
   }
 }
