@@ -12,7 +12,35 @@ export default [
       credentials: true,
     },
   },
-  'strapi::security',
+  {
+    name: 'strapi::security',
+    config: {
+      contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+          'connect-src': ["'self'", 'https:'],
+          'img-src': [
+            "'self'",
+            'data:',
+            'blob:',
+            'res.cloudinary.com', // Cloudinary images
+            'https://res.cloudinary.com',
+            'market-assets.strapi.io',
+            'strapi-ai-staging.s3.us-east-1.amazonaws.com',
+            'strapi-ai-production.s3.us-east-1.amazonaws.com',
+          ],
+          'media-src': [
+            "'self'",
+            'data:',
+            'blob:',
+            'res.cloudinary.com',
+            'https://res.cloudinary.com',
+          ],
+          upgradeInsecureRequests: null,
+        },
+      },
+    },
+  },
   'strapi::poweredBy',
   'strapi::logger',
   'strapi::query',
