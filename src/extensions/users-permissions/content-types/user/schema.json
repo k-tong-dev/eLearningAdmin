@@ -255,6 +255,24 @@
       "relation": "oneToMany",
       "target": "api::course-course.course-course",
       "mappedBy": "owner"
+    },
+    "card_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::card-item.card-item",
+      "mappedBy": "user"
+    },
+    "sale_orders": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::purchase-order.purchase-order",
+      "mappedBy": "user"
+    },
+    "transaction_logs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::transaction-log.transaction-log",
+      "mappedBy": "user"
     }
   }
 }

@@ -598,6 +598,50 @@ export interface ApiBadgeBadge extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCardItemCardItem extends Struct.CollectionTypeSchema {
+  collectionName: 'card_items';
+  info: {
+    displayName: 'Card Item';
+    pluralName: 'card-items';
+    singularName: 'card-item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    course: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::course-course.course-course'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::card-item.card-item'
+    > &
+      Schema.Attribute.Private;
+    price_at_add: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    quantity: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<1>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+  };
+}
+
 export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   collectionName: 'categories';
   info: {
@@ -1071,46 +1115,10 @@ export interface ApiCourseContentCourseContent
       'oneToMany',
       'api::content-progress.content-progress'
     >;
-    copyright_check_date: Schema.Attribute.DateTime &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    copyright_check_metadata: Schema.Attribute.JSON &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    copyright_check_provider: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    copyright_check_result: Schema.Attribute.JSON &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    copyright_check_status: Schema.Attribute.Enumeration<
-      ['pending', 'checking', 'passed', 'failed', 'warning', 'manual_review']
+    copyright_information: Schema.Attribute.Component<
+      'shared.copy-right',
+      false
     > &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<'pending'>;
-    copyright_violations: Schema.Attribute.JSON &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    copyright_warnings: Schema.Attribute.JSON &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -1246,12 +1254,6 @@ export interface ApiCourseContentCourseContent
           localized: true;
         };
       }>;
-    video_fingerprint: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
   };
 }
 
@@ -1286,6 +1288,10 @@ export interface ApiCourseCourseCourseCourse
         };
       }> &
       Schema.Attribute.DefaultTo<false>;
+    card_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::card-item.card-item'
+    >;
     company: Schema.Attribute.Relation<'oneToOne', 'api::company.company'>;
     course_badges: Schema.Attribute.Relation<
       'oneToMany',
@@ -1394,6 +1400,10 @@ export interface ApiCourseCourseCourseCourse
           localized: true;
         };
       }>;
+    order_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::order-item.order-item'
+    >;
     owner: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.user'
@@ -1466,6 +1476,9 @@ export interface ApiCourseEnrollmentCourseEnrollment
       ['active', 'completed', 'cancelled', 'refunded']
     > &
       Schema.Attribute.DefaultTo<'active'>;
+    enrolled_via: Schema.Attribute.Enumeration<
+      ['purchase', 'free', 'admin', 'promotion', 'gift']
+    >;
     is_owner: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
@@ -1473,6 +1486,10 @@ export interface ApiCourseEnrollmentCourseEnrollment
       'api::course-enrollment.course-enrollment'
     > &
       Schema.Attribute.Private;
+    order_item: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::order-item.order-item'
+    >;
     progress_percent: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
     publishedAt: Schema.Attribute.DateTime;
     started_at: Schema.Attribute.DateTime;
@@ -2387,6 +2404,55 @@ export interface ApiMenuControllerMenuController
   };
 }
 
+export interface ApiOrderItemOrderItem extends Struct.CollectionTypeSchema {
+  collectionName: 'order_items';
+  info: {
+    displayName: 'Order Item';
+    pluralName: 'order-items';
+    singularName: 'order-item';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    course: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::course-course.course-course'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    discount_amount: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
+    enrollment_id: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::course-enrollment.course-enrollment'
+    >;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::order-item.order-item'
+    > &
+      Schema.Attribute.Private;
+    price: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    quantity: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          min: 1;
+        },
+        number
+      > &
+      Schema.Attribute.DefaultTo<1>;
+    sale_order: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::purchase-order.purchase-order'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiPaymentMethodPaymentMethod
   extends Struct.CollectionTypeSchema {
   collectionName: 'payment_methods';
@@ -2472,6 +2538,65 @@ export interface ApiPreferToLearnPreferToLearn
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPurchaseOrderPurchaseOrder
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'purchase_orders';
+  info: {
+    displayName: 'Sale Order';
+    pluralName: 'purchase-orders';
+    singularName: 'purchase-order';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    completed_at: Schema.Attribute.DateTime;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    currency: Schema.Attribute.Relation<'oneToOne', 'api::currency.currency'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::purchase-order.purchase-order'
+    > &
+      Schema.Attribute.Private;
+    notes: Schema.Attribute.String;
+    order_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::order-item.order-item'
+    >;
+    order_number: Schema.Attribute.UID & Schema.Attribute.Required;
+    payment_intent_id: Schema.Attribute.String;
+    payment_method: Schema.Attribute.Relation<
+      'oneToOne',
+      'api::payment-method.payment-method'
+    >;
+    payment_status: Schema.Attribute.Enumeration<
+      ['pending', 'paid', 'failed', 'refunded']
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    purchase_status: Schema.Attribute.Enumeration<
+      ['pending', 'processing', 'completed', 'failed', 'refunded', 'cancelled']
+    > &
+      Schema.Attribute.DefaultTo<'pending'>;
+    subtotal: Schema.Attribute.Decimal;
+    tax: Schema.Attribute.Decimal;
+    total: Schema.Attribute.Decimal;
+    transaction_logs: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::transaction-log.transaction-log'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -3081,6 +3206,55 @@ export interface ApiSubscriptionSubscription
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiTransactionLogTransactionLog
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'transaction_logs';
+  info: {
+    displayName: 'Transaction log';
+    pluralName: 'transaction-logs';
+    singularName: 'transaction-log';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    amount: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    currency: Schema.Attribute.Relation<'oneToOne', 'api::currency.currency'>;
+    error_message: Schema.Attribute.JSON;
+    gateway_response: Schema.Attribute.JSON;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::transaction-log.transaction-log'
+    > &
+      Schema.Attribute.Private;
+    metadata: Schema.Attribute.JSON;
+    payment_gateway: Schema.Attribute.String;
+    payment_status: Schema.Attribute.Enumeration<
+      ['success', 'failed', 'pending', 'cancelled']
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    sale_order: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::purchase-order.purchase-order'
+    >;
+    transaction_type: Schema.Attribute.Enumeration<
+      ['payment', 'refund', 'chargeback', 'adjustment']
+    > &
+      Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -3768,6 +3942,10 @@ export interface PluginUsersPermissionsUser
     banking_info: Schema.Attribute.Blocks;
     bio: Schema.Attribute.String;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    card_items: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::card-item.card-item'
+    >;
     certificates: Schema.Attribute.Relation<
       'manyToMany',
       'api::certificate-program.certificate-program'
@@ -3869,8 +4047,16 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    sale_orders: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::purchase-order.purchase-order'
+    >;
     skills: Schema.Attribute.Relation<'oneToMany', 'api::skill.skill'>;
     supabaseId: Schema.Attribute.String;
+    transaction_logs: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::transaction-log.transaction-log'
+    >;
     twister: Schema.Attribute.String;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -3912,6 +4098,7 @@ declare module '@strapi/strapi' {
       'api::article.article': ApiArticleArticle;
       'api::author.author': ApiAuthorAuthor;
       'api::badge.badge': ApiBadgeBadge;
+      'api::card-item.card-item': ApiCardItemCardItem;
       'api::category.category': ApiCategoryCategory;
       'api::certificate-issuance.certificate-issuance': ApiCertificateIssuanceCertificateIssuance;
       'api::certificate-program.certificate-program': ApiCertificateProgramCertificateProgram;
@@ -3940,8 +4127,10 @@ declare module '@strapi/strapi' {
       'api::interested.interested': ApiInterestedInterested;
       'api::learning-goal.learning-goal': ApiLearningGoalLearningGoal;
       'api::menu-controller.menu-controller': ApiMenuControllerMenuController;
+      'api::order-item.order-item': ApiOrderItemOrderItem;
       'api::payment-method.payment-method': ApiPaymentMethodPaymentMethod;
       'api::prefer-to-learn.prefer-to-learn': ApiPreferToLearnPreferToLearn;
+      'api::purchase-order.purchase-order': ApiPurchaseOrderPurchaseOrder;
       'api::purchase-transaction.purchase-transaction': ApiPurchaseTransactionPurchaseTransaction;
       'api::quiz-attempt-answer.quiz-attempt-answer': ApiQuizAttemptAnswerQuizAttemptAnswer;
       'api::quiz-attempt.quiz-attempt': ApiQuizAttemptQuizAttempt;
@@ -3953,6 +4142,7 @@ declare module '@strapi/strapi' {
       'api::subscription-benefit.subscription-benefit': ApiSubscriptionBenefitSubscriptionBenefit;
       'api::subscription-tax.subscription-tax': ApiSubscriptionTaxSubscriptionTax;
       'api::subscription.subscription': ApiSubscriptionSubscription;
+      'api::transaction-log.transaction-log': ApiTransactionLogTransactionLog;
       'api::user-friend.user-friend': ApiUserFriendUserFriend;
       'api::user-group-group.user-group-group': ApiUserGroupGroupUserGroupGroup;
       'api::user-request-request.user-request-request': ApiUserRequestRequestUserRequestRequest;

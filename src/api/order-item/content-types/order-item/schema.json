@@ -1,0 +1,47 @@
+{
+  "kind": "collectionType",
+  "collectionName": "order_items",
+  "info": {
+    "singularName": "order-item",
+    "pluralName": "order-items",
+    "displayName": "Order Item"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "sale_order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::purchase-order.purchase-order",
+      "inversedBy": "order_items"
+    },
+    "course": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-course.course-course",
+      "inversedBy": "order_items"
+    },
+    "price": {
+      "type": "decimal",
+      "required": true
+    },
+    "discount_amount": {
+      "type": "decimal",
+      "default": 0
+    },
+    "quantity": {
+      "type": "integer",
+      "required": false,
+      "default": 1,
+      "min": 1
+    },
+    "enrollment_id": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::course-enrollment.course-enrollment",
+      "mappedBy": "order_item"
+    }
+  }
+}

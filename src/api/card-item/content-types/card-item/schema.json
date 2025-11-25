@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "card_items",
+  "info": {
+    "singularName": "card-item",
+    "pluralName": "card-items",
+    "displayName": "Card Item"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "card_items"
+    },
+    "course": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course-course.course-course",
+      "inversedBy": "card_items"
+    },
+    "quantity": {
+      "type": "integer",
+      "default": 1,
+      "min": 1
+    },
+    "price_at_add": {
+      "type": "integer"
+    }
+  }
+}

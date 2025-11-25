@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "transaction_logs",
+  "info": {
+    "singularName": "transaction-log",
+    "pluralName": "transaction-logs",
+    "displayName": "Transaction log"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "transaction_logs"
+    },
+    "sale_order": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::purchase-order.purchase-order",
+      "inversedBy": "transaction_logs"
+    },
+    "transaction_type": {
+      "type": "enumeration",
+      "required": true,
+      "enum": [
+        "payment",
+        "refund",
+        "chargeback",
+        "adjustment"
+      ]
+    },
+    "amount": {
+      "type": "decimal",
+      "required": true
+    },
+    "currency": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::currency.currency"
+    },
+    "payment_gateway": {
+      "type": "string"
+    },
+    "gateway_response": {
+      "type": "json"
+    },
+    "payment_status": {
+      "type": "enumeration",
+      "enum": [
+        "success",
+        "failed",
+        "pending",
+        "cancelled"
+      ]
+    },
+    "error_message": {
+      "type": "json"
+    },
+    "metadata": {
+      "type": "json"
+    }
+  }
+}

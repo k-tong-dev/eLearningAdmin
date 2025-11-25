@@ -17,6 +17,7 @@ export interface SharedCopyRight extends Struct.ComponentSchema {
     copyright_check_result: Schema.Attribute.JSON;
     copyright_violations: Schema.Attribute.JSON;
     copyright_warnings: Schema.Attribute.JSON;
+    copyrighted: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     video_fingerprint: Schema.Attribute.String;
   };
 }

@@ -38,6 +38,10 @@
     },
     "copyright_check_metadata": {
       "type": "json"
+    },
+    "copyrighted": {
+      "type": "boolean",
+      "default": false
     }
   },
   "config": {}

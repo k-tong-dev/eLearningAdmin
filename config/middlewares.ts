@@ -1,6 +1,7 @@
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:1337';
 
 export default [
+  'global::preview-url-handler',
   'strapi::errors',
   {
     name: 'strapi::cors',

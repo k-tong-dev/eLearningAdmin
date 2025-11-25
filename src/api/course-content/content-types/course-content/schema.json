@@ -336,78 +336,15 @@
       "target": "api::quiz-attempt.quiz-attempt",
       "mappedBy": "course_content"
     },
-    "copyright_check_status": {
-      "type": "enumeration",
+    "copyright_information": {
+      "type": "component",
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
-      "default": "pending",
-      "enum": [
-        "pending",
-        "checking",
-        "passed",
-        "failed",
-        "warning",
-        "manual_review"
-      ]
-    },
-    "copyright_check_result": {
-      "type": "json",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "copyright_check_date": {
-      "type": "datetime",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "copyright_check_provider": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "copyright_violations": {
-      "type": "json",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "copyright_warnings": {
-      "type": "json",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "video_fingerprint": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "copyright_check_metadata": {
-      "type": "json",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+      "component": "shared.copy-right",
+      "repeatable": false
     }
   }
 }

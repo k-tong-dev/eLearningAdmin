@@ -272,6 +272,18 @@
       "relation": "oneToMany",
       "target": "api::course-reviewer.course-reviewer",
       "mappedBy": "course_course"
+    },
+    "card_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::card-item.card-item",
+      "mappedBy": "course"
+    },
+    "order_items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::order-item.order-item",
+      "mappedBy": "course"
     }
   }
 }

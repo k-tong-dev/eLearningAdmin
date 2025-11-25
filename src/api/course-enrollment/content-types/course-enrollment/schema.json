@@ -52,6 +52,22 @@
       "relation": "oneToMany",
       "target": "api::content-progress.content-progress",
       "mappedBy": "course_enrollment"
+    },
+    "order_item": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::order-item.order-item",
+      "inversedBy": "enrollment_id"
+    },
+    "enrolled_via": {
+      "type": "enumeration",
+      "enum": [
+        "purchase",
+        "free",
+        "admin",
+        "promotion",
+        "gift"
+      ]
     }
   }
 }
