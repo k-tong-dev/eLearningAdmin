@@ -30,31 +30,44 @@ async function checkCourseContentsForCopyright(
     for (const material of materials as any[]) {
       if (material.course_contents && Array.isArray(material.course_contents)) {
         for (const content of material.course_contents) {
-          // Check if copyright check has been performed and failed
-          if (content.copyright_check_status === 'failed') {
-            return {
-              hasCopyrightIssues: true,
-              details: `Content "${content.name}" has copyright violations`,
-            };
+          // Only check video, url, and image content types
+          const needsCopyrightCheck = ['video', 'url', 'image'].includes(content.type);
+          
+          if (!needsCopyrightCheck) {
+            continue; // Skip other content types
           }
           
-          // Check if copyright check has warnings for paid courses
-          if (content.copyright_check_status === 'warning') {
-            return {
-              hasCopyrightIssues: true,
-              details: `Content "${content.name}" has copyright warnings`,
-            };
-          }
-          
-          // Check if copyright check is still pending for media content
-          if (
-            (content.type === 'video' || content.type === 'audio') &&
-            (!content.copyright_check_status || content.copyright_check_status === 'pending')
-          ) {
-            return {
-              hasCopyrightIssues: true,
-              details: `Content "${content.name}" has not completed copyright check`,
-            };
+          // Check the NEW component structure first
+          if (content.copyright_information) {
+            const copyrightInfo = content.copyright_information;
+            
+            // ONLY CHECK: If copyrighted = TRUE, it means content HAS copyright issues
+            if (copyrightInfo.copyrighted === true) {
+              return {
+                hasCopyrightIssues: true,
+                details: `Content "${content.name}" contains copyrighted material`,
+              };
+            }
+            
+            // If copyrighted = false OR undefined/null, content is SAFE
+            // Do NOT check copy_right_status - it's only for UI display
+            
+          } else {
+            // Fallback to OLD fields for backward compatibility during migration
+            // After migration, this block can be removed
+            if (content.copyright_check_status === 'failed') {
+              return {
+                hasCopyrightIssues: true,
+                details: `Content "${content.name}" has copyright violations`,
+              };
+            }
+            
+            if (!content.copyright_check_status || content.copyright_check_status === 'pending') {
+              return {
+                hasCopyrightIssues: true,
+                details: `Content "${content.name}" has not completed copyright check`,
+              };
+            }
           }
         }
       }
@@ -78,19 +91,25 @@ export default {
       console.log('[Course Security] beforeUpdate hook triggered', { data, where });
       
       // Get the existing course data using db.query for Strapi v5 compatibility
-      // In Strapi v5, where.documentId is the identifier
-      const documentId = where.documentId || where.id;
+      // In Strapi v5, where can contain either documentId (string) or id (number)
+      const identifier = where.documentId || where.id;
       
-      if (!documentId) {
+      if (!identifier) {
         console.error('[Course Security] No documentId or id provided');
         const error: any = new Error('Invalid course identifier');
         error.details = { message: 'Invalid course identifier' };
         throw error;
       }
 
+      // Determine if we have a documentId (string) or numeric id
+      const isNumericId = typeof identifier === 'number' || (typeof identifier === 'string' && /^\d+$/.test(identifier));
+      const whereClause = isNumericId ? { id: identifier } : { documentId: identifier };
+
+      console.log('[Course Security] Querying course with:', whereClause);
+
       // Use db.query which is more reliable in lifecycle hooks
       const existingCourse: any = await strapi.db.query('api::course-course.course-course').findOne({
-        where: { documentId },
+        where: whereClause,
         populate: {
           currency: true,
           course_materials: true,
@@ -98,7 +117,7 @@ export default {
       });
 
       if (!existingCourse) {
-        console.error('[Course Security] Course not found:', documentId);
+        console.error('[Course Security] Course not found with:', whereClause);
         // Don't throw error if course not found - let Strapi handle it
         // This might be a delete operation or the course doesn't exist
         return;

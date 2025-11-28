@@ -601,14 +601,16 @@ export interface ApiBadgeBadge extends Struct.CollectionTypeSchema {
 export interface ApiCardItemCardItem extends Struct.CollectionTypeSchema {
   collectionName: 'card_items';
   info: {
+    description: 'Shopping Cart items for courses';
     displayName: 'Card Item';
     pluralName: 'card-items';
     singularName: 'card-item';
   };
   options: {
-    draftAndPublish: true;
+    draftAndPublish: false;
   };
   attributes: {
+    added_at: Schema.Attribute.DateTime & Schema.Attribute.Required;
     course: Schema.Attribute.Relation<
       'manyToOne',
       'api::course-course.course-course'
@@ -622,9 +624,10 @@ export interface ApiCardItemCardItem extends Struct.CollectionTypeSchema {
       'api::card-item.card-item'
     > &
       Schema.Attribute.Private;
-    price_at_add: Schema.Attribute.Integer;
+    price_at_add: Schema.Attribute.Decimal & Schema.Attribute.DefaultTo<0>;
     publishedAt: Schema.Attribute.DateTime;
     quantity: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
       Schema.Attribute.SetMinMax<
         {
           min: 1;

@@ -4,32 +4,37 @@
   "info": {
     "singularName": "card-item",
     "pluralName": "card-items",
-    "displayName": "Card Item"
+    "displayName": "Card Item",
+    "description": "Shopping Cart items for courses"
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
     "user": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "card_items"
+      "target": "plugin::users-permissions.user"
     },
     "course": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::course-course.course-course",
-      "inversedBy": "card_items"
+      "target": "api::course-course.course-course"
     },
     "quantity": {
       "type": "integer",
       "default": 1,
-      "min": 1
+      "min": 1,
+      "required": true
     },
     "price_at_add": {
-      "type": "integer"
+      "type": "decimal",
+      "default": 0
+    },
+    "added_at": {
+      "type": "datetime",
+      "required": true
     }
   }
 }
