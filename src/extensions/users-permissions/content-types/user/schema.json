@@ -147,6 +147,11 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::subscription.subscription"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::company.company"
     }
   }
 }

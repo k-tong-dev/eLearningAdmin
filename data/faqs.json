@@ -1,0 +1,163 @@
+[
+  {
+    "question": "What is NEXT4Learn eLearning platform?",
+    "answer": "NEXT4Learn is an online learning system where students can access courses, watch lessons, take quizzes, and earn certificates anytime, anywhere.",
+    "order": 1,
+    "group": "home",
+    "category": "platform",
+    "buttonText": null
+  },
+  {
+    "question": "How do I create an account?",
+    "answer": "Click the “Sign Up” button, fill in your details, and verify your email to create an account.",
+    "order": 2,
+    "group": "home",
+    "category": "account",
+    "buttonText": null
+  },
+  {
+    "question": "Is registration free?",
+    "answer": "Yes, signing up is completely free. Some courses are paid, while others are free.",
+    "order": 3,
+    "group": "home",
+    "category": "account",
+    "buttonText": null
+  },
+  {
+    "question": "How do I enroll in a course?",
+    "answer": "After logging in, browse the available courses and click “Enroll” or “Start Course” on the one you want.",
+    "order": 4,
+    "group": "home",
+    "category": "courses",
+    "buttonText": null
+  },
+  {
+    "question": "Can I access my courses on mobile?",
+    "answer": "Yes, you can access all your courses using a mobile phone, tablet, or computer.",
+    "order": 5,
+    "group": "home",
+    "category": "platform",
+    "buttonText": null
+  },
+  {
+    "question": "Do I need to install any software?",
+    "answer": "No, you don’t need to install anything. You only need an internet connection and a web browser.",
+    "order": 6,
+    "group": "home",
+    "category": "platform",
+    "buttonText": null
+  },
+  {
+    "question": "Are the courses self-paced?",
+    "answer": "Yes, most courses allow you to learn at your own pace and schedule.",
+    "order": 7,
+    "group": "home",
+    "category": "courses",
+    "buttonText": null
+  },
+  {
+    "question": "Will I get a certificate after completing a course?",
+    "answer": "Yes, you’ll receive a digital certificate once you complete all lessons and assessments.",
+    "order": 8,
+    "group": "home",
+    "category": "courses",
+    "buttonText": null
+  },
+  {
+    "question": "How can I reset my password?",
+    "answer": "Click “Forgot Password?” on the login page and follow the steps sent to your email.",
+    "order": 9,
+    "group": "home",
+    "category": "account",
+    "buttonText": "Reset Password"
+  },
+  {
+    "question": "How can I contact support if I have issues?",
+    "answer": "You can contact support through the “Contact Us” page or email us at support@next4learn.com.",
+    "order": 10,
+    "group": "support",
+    "category": "platform",
+    "buttonText": "Contact Support"
+  },
+  {
+    "question": "Can instructors upload their own courses?",
+    "answer": "Yes, instructors can create and upload courses after admin approval.",
+    "order": 11,
+    "group": "home",
+    "category": "courses",
+    "buttonText": null
+  },
+  {
+    "question": "What types of content can a course include?",
+    "answer": "Courses can include videos, PDFs, PowerPoints, quizzes, and assignments.",
+    "order": 12,
+    "group": "home",
+    "category": "courses",
+    "buttonText": null
+  },
+  {
+    "question": "How do I track my learning progress?",
+    "answer": "You can view your progress and quiz results in your user dashboard.",
+    "order": 13,
+    "group": "home",
+    "category": "platform",
+    "buttonText": "Open Dashboard"
+  },
+  {
+    "question": "Can I retake a quiz?",
+    "answer": "Yes, most quizzes can be taken again, unless restricted by the instructor.",
+    "order": 14,
+    "group": "home",
+    "category": "courses",
+    "buttonText": null
+  },
+  {
+    "question": "Are there any deadlines for course completion?",
+    "answer": "Self-paced courses have no deadlines, but instructor-led ones may have set schedules.",
+    "order": 15,
+    "group": "home",
+    "category": "courses",
+    "buttonText": null
+  },
+  {
+    "question": "Can I get a refund after buying a course?",
+    "answer": "Yes, you can request a refund within a certain period if you meet the refund policy requirements.",
+    "order": 16,
+    "group": "payment",
+    "category": "payments",
+    "buttonText": "View Refund Policy"
+  },
+  {
+    "question": "How secure is my personal information?",
+    "answer": "Your information is protected with SSL encryption and strict privacy standards.",
+    "order": 17,
+    "group": "home",
+    "category": "platform",
+    "buttonText": null
+  },
+  {
+    "question": "Can I learn offline?",
+    "answer": "Some materials can be downloaded, but streaming videos still require an internet connection.",
+    "order": 18,
+    "group": "home",
+    "category": "platform",
+    "buttonText": null
+  },
+  {
+    "question": "Can I communicate with instructors?",
+    "answer": "Yes, you can send questions through the course discussion or message section.",
+    "order": 19,
+    "group": "support",
+    "category": "courses",
+    "buttonText": "Message Instructor"
+  },
+  {
+    "question": "Do you offer group or institutional plans?",
+    "answer": "Yes, NEXT4Learn provides learning plans for schools, universities, and organizations.",
+    "order": 20,
+    "group": "home",
+    "category": "other",
+    "buttonText": "Contact Sales"
+  }
+]
+

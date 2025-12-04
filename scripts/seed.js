@@ -5,6 +5,14 @@ const path = require('path');
 const mime = require('mime-types');
 const { categories, authors, articles, global, about } = require('../data/data.json');
 
+// Try to load FAQs from JSON file, but don't fail if it doesn't exist
+let faqEntries = [];
+try {
+  faqEntries = require('../data/faqs.json');
+} catch (error) {
+  console.warn('⚠️  faqs.json not found. Skipping FAQ import.');
+}
+
 async function seedExampleApp() {
   const shouldImportSeedData = await isFirstRun();
 
@@ -236,6 +244,25 @@ async function importAuthors() {
   }
 }
 
+async function importFaqs() {
+  if (faqEntries.length === 0) {
+    console.log('Skipping FAQ import (no faqs.json file found)');
+    return;
+  }
+  
+  for (const faq of faqEntries) {
+    await createEntry({
+      model: 'faq',
+      entry: {
+        ...faq,
+        isPublished: true,
+        publishedAt: new Date().toISOString(),
+      },
+    });
+  }
+  console.log(`Imported ${faqEntries.length} FAQs`);
+}
+
 async function importSeedData() {
   // Allow read of application content types
   await setPublicPermissions({
@@ -244,6 +271,7 @@ async function importSeedData() {
     author: ['find', 'findOne'],
     global: ['find', 'findOne'],
     about: ['find', 'findOne'],
+    faq: ['find', 'findOne'],
   });
 
   // Create all entries
@@ -252,6 +280,7 @@ async function importSeedData() {
   await importArticles();
   await importGlobal();
   await importAbout();
+  await importFaqs();
 }
 
 async function main() {

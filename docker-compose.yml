@@ -9,26 +9,28 @@ services:
       POSTGRES_PASSWORD: strapi
     volumes:
       - db_data:/var/lib/postgresql/data
-
-  strapi:
-    build: .
-    container_name: Strapi-App
-    working_dir: /srv/app
-    volumes:
-      - ./:/srv/app
-    command: sh -c "npm install && npm run develop"
-    environment:
-      DATABASE_CLIENT: postgres
-      DATABASE_HOST: db
-      DATABASE_PORT: 5432
-      DATABASE_NAME: elearning
-      DATABASE_USERNAME: strapi
-      DATABASE_PASSWORD: strapi
-      DATABASE_SSL: false
     ports:
-      - "1337:1337"
-    depends_on:
-      - db
+      - '5432:5432'
+#
+#  strapi:
+#    build: .
+#    container_name: Strapi-App
+#    working_dir: /srv/app
+#    volumes:
+#      - ./:/srv/app
+#    command: sh -c "npm install && npm run develop"
+#    environment:
+#      DATABASE_CLIENT: postgres
+#      DATABASE_HOST: db
+#      DATABASE_PORT: 5432
+#      DATABASE_NAME: elearning
+#      DATABASE_USERNAME: strapi
+#      DATABASE_PASSWORD: strapi
+#      DATABASE_SSL: false
+#    ports:
+#      - "1337:1337"
+#    depends_on:
+#      - db
 
 volumes:
   db_data:
