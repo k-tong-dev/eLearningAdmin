@@ -68,6 +68,11 @@
     },
     "url": {
       "type": "string"
+    },
+    "courses": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::course-course.course-course"
     }
   }
 }

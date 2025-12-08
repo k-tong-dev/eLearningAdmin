@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "forum_comments",
+  "info": {
+    "singularName": "forum-comment",
+    "pluralName": "forum-comments",
+    "displayName": "Forum Comment"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "attributes": {
+      "type": "richtext"
+    },
+    "author": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "forum_comments"
+    },
+    "forumPost": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::forum-forum.forum-forum",
+      "inversedBy": "comments"
+    },
+    "replies": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::forum-comment.forum-comment",
+      "mappedBy": "parentComment"
+    },
+    "parentComment": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::forum-comment.forum-comment",
+      "inversedBy": "replies"
+    },
+    "likes": {
+      "type": "integer",
+      "default": 0
+    },
+    "dislikes": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

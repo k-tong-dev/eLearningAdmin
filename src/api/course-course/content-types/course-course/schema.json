@@ -284,6 +284,15 @@
       "relation": "oneToMany",
       "target": "api::order-item.order-item",
       "mappedBy": "course"
+    },
+    "enrollment_limit": {
+      "type": "integer",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": 0
     }
   }
 }

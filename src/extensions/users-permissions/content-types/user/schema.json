@@ -273,6 +273,24 @@
       "relation": "oneToMany",
       "target": "api::transaction-log.transaction-log",
       "mappedBy": "user"
+    },
+    "forum_comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::forum-comment.forum-comment",
+      "mappedBy": "author"
+    },
+    "forum_forums": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::forum-forum.forum-forum",
+      "mappedBy": "author"
+    },
+    "blog_posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::blog-post.blog-post",
+      "mappedBy": "author"
     }
   }
 }

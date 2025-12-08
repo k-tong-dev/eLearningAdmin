@@ -598,6 +598,248 @@ export interface ApiBadgeBadge extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiBlogCategoryBlogCategory
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'blog_categories';
+  info: {
+    displayName: 'Blog Category';
+    pluralName: 'blog-categories';
+    singularName: 'blog-category';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    color: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blog-category.blog-category'
+    >;
+    name: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    postCount: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<0>;
+    posts: Schema.Attribute.Relation<'oneToMany', 'api::blog-post.blog-post'>;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiBlogCommentBlogComment extends Struct.CollectionTypeSchema {
+  collectionName: 'blog_comments';
+  info: {
+    displayName: ' Blog Comment ';
+    pluralName: 'blog-comments';
+    singularName: 'blog-comment';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    author: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    content: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    isApproved: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blog-comment.blog-comment'
+    >;
+    parentComment: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::blog-comment.blog-comment'
+    >;
+    posts: Schema.Attribute.Relation<'manyToOne', 'api::blog-post.blog-post'>;
+    publishedAt: Schema.Attribute.DateTime;
+    replies: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blog-comment.blog-comment'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiBlogPostBlogPost extends Struct.CollectionTypeSchema {
+  collectionName: 'blog_posts';
+  info: {
+    displayName: 'Blog Post';
+    pluralName: 'blog-posts';
+    singularName: 'blog-post';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    author: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    category: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::blog-category.blog-category'
+    >;
+    comments: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blog-comment.blog-comment'
+    >;
+    commentsCount: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<0>;
+    content: Schema.Attribute.RichText &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    coverImage: Schema.Attribute.Media<'images' | 'videos'> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    excerpt: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    isFeatured: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
+    likes: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blog-post.blog-post'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    readTime: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<0>;
+    SEO: Schema.Attribute.Component<'shared.seo', false> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    slug: Schema.Attribute.UID<'title'> &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    tags: Schema.Attribute.Blocks &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    views: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+  };
+}
+
 export interface ApiCardItemCardItem extends Struct.CollectionTypeSchema {
   collectionName: 'card_items';
   info: {
@@ -1377,6 +1619,13 @@ export interface ApiCourseCourseCourseCourse
         };
       }> &
       Schema.Attribute.DefaultTo<0>;
+    enrollment_limit: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<0>;
     enrollments: Schema.Attribute.Relation<
       'oneToMany',
       'api::course-enrollment.course-enrollment'
@@ -1925,6 +2174,53 @@ export interface ApiCurrencyCurrency extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiForumCommentForumComment
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'forum_comments';
+  info: {
+    displayName: 'Forum Comment';
+    pluralName: 'forum-comments';
+    singularName: 'forum-comment';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    attributes: Schema.Attribute.RichText;
+    author: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    dislikes: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    forumPost: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::forum-forum.forum-forum'
+    >;
+    likes: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::forum-comment.forum-comment'
+    > &
+      Schema.Attribute.Private;
+    parentComment: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::forum-comment.forum-comment'
+    >;
+    publishedAt: Schema.Attribute.DateTime;
+    replies: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::forum-comment.forum-comment'
+    >;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiForumForumForumForum extends Struct.CollectionTypeSchema {
   collectionName: 'forum_forums';
   info: {
@@ -1941,6 +2237,36 @@ export interface ApiForumForumForumForum extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
+    attributes: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    author: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    category: Schema.Attribute.Enumeration<
+      ['general', 'courses', 'technical', 'projects', 'career', 'announcements']
+    > &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'general'>;
+    comments: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::forum-comment.forum-comment'
+    >;
+    content: Schema.Attribute.RichText &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1955,17 +2281,62 @@ export interface ApiForumForumForumForum extends Struct.CollectionTypeSchema {
         i18n: {
           localized: true;
         };
-      }>;
+      }> &
+      Schema.Attribute.DefaultTo<0>;
+    dislikes: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<0>;
+    forum_status: Schema.Attribute.Enumeration<
+      ['draft', 'published', 'archived', 'closed']
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'draft'>;
     forum_tags: Schema.Attribute.Relation<
       'oneToMany',
       'api::forum-tag.forum-tag'
     >;
-    liked: Schema.Attribute.Integer &
+    isAnswered: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
+    isPinned: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
+    lastActivity: Schema.Attribute.DateTime &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    liked: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<0>;
+    likes: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<0>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -1978,6 +2349,13 @@ export interface ApiForumForumForumForum extends Struct.CollectionTypeSchema {
         };
       }>;
     publishedAt: Schema.Attribute.DateTime;
+    repliesCount: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<0>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1985,6 +2363,12 @@ export interface ApiForumForumForumForum extends Struct.CollectionTypeSchema {
       'oneToMany',
       'plugin::users-permissions.user'
     >;
+    views: Schema.Attribute.Integer &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
   };
 }
 
@@ -2898,6 +3282,10 @@ export interface ApiReportIssueReportIssue extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    courses: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::course-course.course-course'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -3945,6 +4333,10 @@ export interface PluginUsersPermissionsUser
     banking_info: Schema.Attribute.Blocks;
     bio: Schema.Attribute.String;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    blog_posts: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::blog-post.blog-post'
+    >;
     card_items: Schema.Attribute.Relation<
       'oneToMany',
       'api::card-item.card-item'
@@ -3984,6 +4376,14 @@ export interface PluginUsersPermissionsUser
     following: Schema.Attribute.Relation<
       'manyToMany',
       'api::instructor.instructor'
+    >;
+    forum_comments: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::forum-comment.forum-comment'
+    >;
+    forum_forums: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::forum-forum.forum-forum'
     >;
     friend_limit: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1000>;
     github: Schema.Attribute.String;
@@ -4101,6 +4501,9 @@ declare module '@strapi/strapi' {
       'api::article.article': ApiArticleArticle;
       'api::author.author': ApiAuthorAuthor;
       'api::badge.badge': ApiBadgeBadge;
+      'api::blog-category.blog-category': ApiBlogCategoryBlogCategory;
+      'api::blog-comment.blog-comment': ApiBlogCommentBlogComment;
+      'api::blog-post.blog-post': ApiBlogPostBlogPost;
       'api::card-item.card-item': ApiCardItemCardItem;
       'api::category.category': ApiCategoryCategory;
       'api::certificate-issuance.certificate-issuance': ApiCertificateIssuanceCertificateIssuance;
@@ -4123,6 +4526,7 @@ declare module '@strapi/strapi' {
       'api::course-reviewer.course-reviewer': ApiCourseReviewerCourseReviewer;
       'api::course-tage.course-tage': ApiCourseTageCourseTage;
       'api::currency.currency': ApiCurrencyCurrency;
+      'api::forum-comment.forum-comment': ApiForumCommentForumComment;
       'api::forum-forum.forum-forum': ApiForumForumForumForum;
       'api::forum-tag.forum-tag': ApiForumTagForumTag;
       'api::global.global': ApiGlobalGlobal;

@@ -20,7 +20,27 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "keywords": {
+      "type": "string"
+    },
+    "ogImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "ogType": {
+      "type": "enumeration",
+      "default": "website",
+      "enum": [
+        "website",
+        "article"
+      ]
     }
   }
 }
