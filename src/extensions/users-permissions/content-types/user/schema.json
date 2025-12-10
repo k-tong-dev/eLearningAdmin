@@ -291,6 +291,11 @@
       "relation": "oneToMany",
       "target": "api::blog-post.blog-post",
       "mappedBy": "author"
+    },
+    "followers": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user"
     }
   }
 }

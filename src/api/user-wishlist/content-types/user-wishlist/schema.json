@@ -20,6 +20,11 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::course-course.course-course"
+    },
+    "blog": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::blog-post.blog-post"
     }
   }
 }

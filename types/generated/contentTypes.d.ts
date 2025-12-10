@@ -2471,6 +2471,30 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    bank_account_number: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    bank_country: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    bank_name: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    bank_swift_bic: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     banking_info: Schema.Attribute.Blocks &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -2564,6 +2588,21 @@ export interface ApiInstructorInstructor extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    paypal_email: Schema.Attribute.Email &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    preferred_payout_method: Schema.Attribute.Enumeration<
+      ['paypal', 'stripe', 'bank_transfer', 'manual']
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'paypal'>;
     publishedAt: Schema.Attribute.DateTime;
     purchase_transactions: Schema.Attribute.Relation<
       'oneToMany',
@@ -3847,6 +3886,7 @@ export interface ApiUserWishlistUserWishlist
     draftAndPublish: true;
   };
   attributes: {
+    blog: Schema.Attribute.Relation<'oneToOne', 'api::blog-post.blog-post'>;
     course_course: Schema.Attribute.Relation<
       'oneToOne',
       'api::course-course.course-course'
@@ -4373,6 +4413,10 @@ export interface PluginUsersPermissionsUser
         minLength: 6;
       }>;
     facebook: Schema.Attribute.String;
+    followers: Schema.Attribute.Relation<
+      'oneToMany',
+      'plugin::users-permissions.user'
+    >;
     following: Schema.Attribute.Relation<
       'manyToMany',
       'api::instructor.instructor'

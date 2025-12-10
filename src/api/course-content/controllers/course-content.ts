@@ -10,7 +10,7 @@ export default factories.createCoreController('api::course-content.course-conten
    */
   async create(ctx) {
     try {
-      const { data } = ctx.request.body;
+      const { data } = (ctx.request as any).body;
       
       console.log('[Course Content] Create request received:', data);
       
