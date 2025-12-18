@@ -1686,6 +1686,13 @@ export interface ApiCourseCourseCourseCourse
       'oneToMany',
       'api::purchase-transaction.purchase-transaction'
     >;
+    rating_counts: Schema.Attribute.Decimal &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<0>;
     relevant_skills: Schema.Attribute.Relation<'oneToMany', 'api::skill.skill'>;
     revenue_generated: Schema.Attribute.Integer &
       Schema.Attribute.SetPluginOptions<{
