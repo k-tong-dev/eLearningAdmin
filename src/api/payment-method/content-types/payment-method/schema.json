@@ -23,7 +23,6 @@
       "enum": [
         "credit_card",
         "debit_card",
-        "paypal",
         "bank_account"
       ]
     },
@@ -32,8 +31,7 @@
       "default": "stripe",
       "enum": [
         "stripe",
-        "paypal",
-        "manual"
+        "aba_payway"
       ]
     },
     "details": {

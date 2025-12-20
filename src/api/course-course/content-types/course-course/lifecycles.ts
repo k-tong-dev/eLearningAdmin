@@ -3,6 +3,28 @@
  * Security: Prevent updates to published paid courses with copyright concerns
  */
 
+/**
+ * Helper function to create properly formatted ValidationError for Strapi v5 admin UI
+ */
+function createValidationError(message: string, fields: string[] = []): Error {
+  const error: any = new Error(message);
+  error.name = 'ValidationError';
+  error.details = {
+    errors: fields.length > 0
+      ? fields.map(field => ({
+          path: [field],
+          message: message,
+          name: 'ValidationError',
+        }))
+      : [{
+          path: [],
+          message: message,
+          name: 'ValidationError',
+        }],
+  };
+  return error;
+}
+
 async function checkCourseContentsForCopyright(
   strapi: any,
   courseId: string | number
@@ -96,9 +118,7 @@ export default {
       
       if (!identifier) {
         console.error('[Course Security] No documentId or id provided');
-        const error: any = new Error('Invalid course identifier');
-        error.details = { message: 'Invalid course identifier' };
-        throw error;
+        throw createValidationError('Invalid course identifier');
       }
 
       // Determine if we have a documentId (string) or numeric id
@@ -125,43 +145,114 @@ export default {
 
       console.log('[Course Security] Existing course status:', existingCourse.course_status);
 
-      // Security Rule 1: If course is published, only allow status changes to draft or cancel
+      // Security Rule 1: If course is published, block updates UNLESS changing status to draft/cancel
       if (existingCourse.course_status === 'published') {
-        // Check if they're trying to change the status
-        if (data.course_status && data.course_status !== 'published') {
-          // Allow changing from published to draft or cancel
-          console.log(`[Course Security] Allowing status change from published to ${data.course_status}`);
-          // Only allow the course_status field to be updated, block all other changes
-          const allowedFields = ['course_status', 'active', 'locale'];
-          const attemptedFields = Object.keys(data);
-          const blockedFields = attemptedFields.filter(
-            field => !allowedFields.includes(field)
-          );
-          
-          if (blockedFields.length > 0) {
-            const error: any = new Error(
-              `Cannot update fields [${blockedFields.join(', ')}] while course is published. ` +
-              'Please change course status to "draft" or "cancel" first, then make your changes.'
-            );
-            error.details = {
-              message: error.message,
-              blockedFields,
-              currentStatus: existingCourse.course_status,
-            };
-            throw error;
-          }
-        } else {
-          // They're trying to update other fields while status is still published
-          const error: any = new Error(
-            'Cannot update a published course. Please change the course status to "draft" or "cancel" first before making any changes.'
-          );
-          error.details = {
-            message: error.message,
-            currentStatus: existingCourse.course_status,
-            attemptedFields: Object.keys(data),
-          };
-          throw error;
+        // Check if they're changing the status FROM published TO draft or cancel
+        const isUnpublishing = data.course_status && 
+                               data.course_status !== 'published' && 
+                               existingCourse.course_status === 'published';
+        
+        // If unpublishing (changing to draft/cancel), allow ALL changes
+        // This makes sense: if you're unpublishing, you should be able to edit everything
+        if (isUnpublishing) {
+          console.log(`[Course Security] Unpublishing course (${existingCourse.course_status} → ${data.course_status}), allowing all field changes`);
+          // Allow all changes when unpublishing - no need to check individual fields
+          return;
         }
+        
+        // If status remains "published", block all field changes
+        // Helper function to check if a value actually changed
+        const hasValueChanged = (field: string, newValue: any, oldValue: any): boolean => {
+          // Both undefined/null - no change
+          if ((newValue === undefined || newValue === null) && (oldValue === undefined || oldValue === null)) {
+            return false;
+          }
+          
+          // One is undefined/null, other is not - changed
+          if ((newValue === undefined || newValue === null) !== (oldValue === undefined || oldValue === null)) {
+            return true;
+          }
+          
+          // Handle relations - compare IDs
+          // New value might be an object (from populate) or just an ID (from form submission)
+          if (typeof newValue === 'object' && newValue !== null && !Array.isArray(newValue)) {
+            // Extract ID from new value
+            const newId = newValue.id || newValue.documentId || newValue;
+            // Extract ID from old value (might be object or ID)
+            let oldId = oldValue;
+            if (typeof oldValue === 'object' && oldValue !== null) {
+              oldId = oldValue.id || oldValue.documentId;
+            }
+            return String(newId) !== String(oldId);
+          }
+          
+          // Handle arrays (relations)
+          if (Array.isArray(newValue)) {
+            // Extract IDs from new array
+            const newIds = newValue
+              .map((item: any) => {
+                if (typeof item === 'object' && item !== null) {
+                  return item.id || item.documentId || item;
+                }
+                return item;
+              })
+              .map(String)
+              .sort();
+            
+            // Extract IDs from old array (might be objects or IDs)
+            const oldArray = Array.isArray(oldValue) ? oldValue : (oldValue ? [oldValue] : []);
+            const oldIds = oldArray
+              .map((item: any) => {
+                if (typeof item === 'object' && item !== null) {
+                  return item.id || item.documentId || item;
+                }
+                return item;
+              })
+              .map(String)
+              .sort();
+            
+            return JSON.stringify(newIds) !== JSON.stringify(oldIds);
+          }
+          
+          // Handle primitive values - convert to string for comparison
+          return String(newValue) !== String(oldValue);
+        };
+        
+        // System fields that are always allowed or managed by Strapi
+        const systemFields = ['locale', 'publishedAt', 'updatedAt', 'createdAt', 'createdBy', 'updatedBy', 'localizations', 'documentId'];
+        
+        // Check which fields have actually changed (excluding system fields)
+        const actuallyChangedFields: string[] = [];
+        
+        for (const field of Object.keys(data)) {
+          // Skip system fields
+          if (systemFields.includes(field)) {
+            continue;
+          }
+          
+          // Skip status field if it's still "published" (no change)
+          if (field === 'course_status' && data.course_status === 'published') {
+            continue;
+          }
+          
+          // Check if this field value actually changed
+          const existingValue = existingCourse[field];
+          const newValue = data[field];
+          
+          if (hasValueChanged(field, newValue, existingValue)) {
+            actuallyChangedFields.push(field);
+          }
+        }
+        
+        // Block if there are actual changes to fields (status remains published)
+        if (actuallyChangedFields.length > 0) {
+          const errorMessage = 'Cannot update a published course. Please change the course status to "draft" or "cancel" first before making any changes.';
+          throw createValidationError(errorMessage, actuallyChangedFields);
+        }
+        
+        // If no fields actually changed, allow the save (might be a refresh or system update)
+        console.log('[Course Security] No actual field changes detected, allowing save');
+        return;
       }
 
       // Security Rule 2: Check copyright before allowing status change to published
@@ -186,16 +277,8 @@ export default {
 
             if (copyrightCheck.hasCopyrightIssues) {
               console.warn('[Course Security] Copyright issues found:', copyrightCheck.details);
-              const error: any = new Error(
-                `Cannot publish paid course with copyright issues: ${copyrightCheck.details}. ` +
-                'Please resolve all copyright violations before publishing.'
-              );
-              error.details = {
-                message: error.message,
-                copyrightIssues: copyrightCheck.details,
-                courseId: existingCourse.id,
-              };
-              throw error;
+              const errorMessage = `Cannot publish paid course with copyright issues: ${copyrightCheck.details}. Please resolve all copyright violations before publishing.`;
+              throw createValidationError(errorMessage, ['course_status']);
             }
             console.log('[Course Security] Copyright check passed');
           } catch (copyrightError: any) {
@@ -221,16 +304,8 @@ export default {
           );
 
           if (copyrightCheck.hasCopyrightIssues) {
-            const error: any = new Error(
-              `Cannot change to paid course with copyright issues: ${copyrightCheck.details}. ` +
-              'Please unpublish, resolve copyright issues, and then republish.'
-            );
-            error.details = {
-              message: error.message,
-              copyrightIssues: copyrightCheck.details,
-              courseId: existingCourse.id,
-            };
-            throw error;
+            const errorMessage = `Cannot change to paid course with copyright issues: ${copyrightCheck.details}. Please unpublish, resolve copyright issues, and then republish.`;
+            throw createValidationError(errorMessage, ['is_paid']);
           }
         } catch (copyrightError: any) {
           console.error('[Course Security] Error during copyright check:', copyrightError);
@@ -250,20 +325,19 @@ export default {
       console.error('[Course Security] Error message:', error.message);
       console.error('[Course Security] Error stack:', error.stack);
       
-      // Add details for better error display in Strapi admin
-      if (!error.details) {
-        error.details = { message: error.message };
+      // If error is already properly formatted with ValidationError structure, re-throw it
+      if (error.name === 'ValidationError' && error.details?.errors && Array.isArray(error.details.errors)) {
+        throw error;
       }
       
-      // Create a proper ApplicationError for Strapi
-      const strapiError = {
-        name: 'ValidationError',
-        message: error.message,
-        details: error.details,
-      };
+      // Format error for Strapi v5 admin UI
+      const errorMessage = error.message || 'Validation failed';
+      const blockedFields = error.details?.blockedFields || [];
+      const attemptedFields = error.details?.attemptedFields || [];
+      const fields = blockedFields.length > 0 ? blockedFields : attemptedFields;
       
-      // Throw the error to prevent the update and show in Strapi admin
-      throw strapiError;
+      // Throw properly formatted error
+      throw createValidationError(errorMessage, fields);
     }
   },
 
@@ -279,6 +353,60 @@ export default {
         '[Course Security] Creating a published paid course. ' +
         'Ensure copyright checks are performed on all materials.'
       );
+    }
+  },
+
+  /**
+   * After updating a course, recalculate rating_counts (count of reviewers) if not manually set
+   * rating_counts = total number of users who rated the course
+   */
+  async afterUpdate(event: any) {
+    const { result, params } = event;
+    const { data } = params;
+
+    // Only recalculate if rating_counts was NOT manually set in this update
+    // If user manually set rating_counts, respect their choice
+    if (data.rating_counts === undefined) {
+      try {
+        // Get all reviewers for this course
+        const reviewers = await strapi.entityService.findMany(
+          'api::course-reviewer.course-reviewer',
+          {
+            filters: {
+              course_course: {
+                id: result.id,
+              },
+            },
+            fields: ['rating_stars'],
+          }
+        );
+
+        // Count the number of reviewers (ratings)
+        const ratingCount = reviewers ? reviewers.length : 0;
+
+        // Only update if different from current value to avoid infinite loops
+        if (result.rating_counts !== ratingCount) {
+          await strapi.entityService.update(
+            'api::course-course.course-course',
+            result.id,
+            {
+              data: {
+                rating_counts: ratingCount,
+              },
+            }
+          );
+          console.log(
+            `[Rating Update] Auto-updated course ${result.id} rating_counts to ${ratingCount} ` +
+            `(total number of ratings/reviewers)`
+          );
+        }
+      } catch (error) {
+        console.error(`[Rating Update] Error auto-updating rating_counts for course ${result.id}:`, error);
+        // Don't throw - allow the course update to succeed
+      }
+    } else {
+      // rating_counts was manually set, respect the user's choice
+      console.log(`[Rating Update] Course ${result.id} rating_counts manually set to ${data.rating_counts}, not recalculating`);
     }
   },
 };
