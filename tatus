@@ -1,0 +1,26 @@
+warning: in the working copy of 'src/api/course-content/controllers/course-content.ts', LF will be replaced by CRLF the next time Git touches it
+[1mdiff --git a/src/api/course-content/controllers/course-content.ts b/src/api/course-content/controllers/course-content.ts[m
+[1mindex 76206ce..faf5033 100644[m
+[1m--- a/src/api/course-content/controllers/course-content.ts[m
+[1m+++ b/src/api/course-content/controllers/course-content.ts[m
+[36m@@ -8,9 +8,9 @@[m [mexport default factories.createCoreController('api::course-content.course-conten[m
+   /**[m
+    * Custom create method to check copyright before saving[m
+    */[m
+[31m-  async create(ctx) {[m
+[32m+[m[32m  async create(ctx: any) {[m
+     try {[m
+[31m-      const { data } = ctx.request.body;[m
+[32m+[m[32m      const { data } = ctx.request.body as { data: any };[m
+       [m
+       console.log('[Course Content] Create request received:', data);[m
+       [m
+[36m@@ -50,7 +50,7 @@[m [mexport default factories.createCoreController('api::course-content.course-conten[m
+   /**[m
+    * Custom update method to handle copyright information updates[m
+    */[m
+[31m-  async update(ctx) {[m
+[32m+[m[32m  async update(ctx: any) {[m
+     try {[m
+       console.log('[Course Content] Update request received');[m
+       [m

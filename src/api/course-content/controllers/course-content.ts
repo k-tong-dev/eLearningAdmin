@@ -8,9 +8,9 @@ export default factories.createCoreController('api::course-content.course-conten
   /**
    * Custom create method to check copyright before saving
    */
-  async create(ctx) {
+  async create(ctx: any) {
     try {
-      const { data } = ctx.request.body;
+      const { data } = ctx.request.body as { data: any };
       
       console.log('[Course Content] Create request received:', data);
       
@@ -50,7 +50,7 @@ export default factories.createCoreController('api::course-content.course-conten
   /**
    * Custom update method to handle copyright information updates
    */
-  async update(ctx) {
+  async update(ctx: any) {
     try {
       console.log('[Course Content] Update request received');
       

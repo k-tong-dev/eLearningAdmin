@@ -1,0 +1,71 @@
+{
+  "kind": "collectionType",
+  "collectionName": "jobs",
+  "info": {
+    "singularName": "job",
+    "pluralName": "jobs",
+    "displayName": "Job",
+    "description": "Job postings for careers page"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "description": {
+      "type": "richtext",
+      "required": true
+    },
+    "location": {
+      "type": "string",
+      "required": true
+    },
+    "jobType": {
+      "type": "enumeration",
+      "required": true,
+      "default": "full-time",
+      "enum": [
+        "full-time",
+        "part-time",
+        "contract",
+        "internship"
+      ]
+    },
+    "salaryMin": {
+      "type": "integer"
+    },
+    "salaryMax": {
+      "type": "integer"
+    },
+    "jobStatus": {
+      "type": "enumeration",
+      "default": "draft",
+      "enum": [
+        "draft",
+        "open",
+        "closed"
+      ]
+    },
+    "orgName": {
+      "type": "string",
+      "required": true
+    },
+    "orgLogo": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

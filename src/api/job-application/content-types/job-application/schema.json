@@ -1,0 +1,52 @@
+{
+  "kind": "collectionType",
+  "collectionName": "job_applications",
+  "info": {
+    "singularName": "job-application",
+    "pluralName": "job-applications",
+    "displayName": "Job Application",
+    "description": "Job applications submitted by candidates"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "fullName": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "phone": {
+      "type": "string"
+    },
+    "resume": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["files"]
+    },
+    "coverLetter": {
+      "type": "text"
+    },
+    "portfolioUrl": {
+      "type": "string"
+    },
+    "applyStatus": {
+      "type": "enumeration",
+      "enum": ["new", "review", "shortlisted", "rejected", "hired"],
+      "default": "new",
+      "required": true
+    },
+    "job": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::job.job",
+      "required": true
+    }
+  }
+}
+
