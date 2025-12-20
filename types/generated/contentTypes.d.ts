@@ -2911,12 +2911,12 @@ export interface ApiPaymentMethodPaymentMethod
       'api::payment-method.payment-method'
     > &
       Schema.Attribute.Private;
-    provider: Schema.Attribute.Enumeration<['stripe', 'paypal', 'manual']> &
+    provider: Schema.Attribute.Enumeration<['stripe', 'aba_payway']> &
       Schema.Attribute.DefaultTo<'stripe'>;
     publishedAt: Schema.Attribute.DateTime;
     stripe_payment_method_id: Schema.Attribute.String;
     type: Schema.Attribute.Enumeration<
-      ['credit_card', 'debit_card', 'paypal', 'bank_account']
+      ['credit_card', 'debit_card', 'bank_account']
     > &
       Schema.Attribute.DefaultTo<'credit_card'>;
     updatedAt: Schema.Attribute.DateTime;
@@ -4506,6 +4506,7 @@ export interface PluginUsersPermissionsUser
       'api::purchase-order.purchase-order'
     >;
     skills: Schema.Attribute.Relation<'oneToMany', 'api::skill.skill'>;
+    stripe_account_id: Schema.Attribute.String;
     supabaseId: Schema.Attribute.String;
     transaction_logs: Schema.Attribute.Relation<
       'oneToMany',

@@ -296,6 +296,9 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "plugin::users-permissions.user"
+    },
+    "stripe_account_id": {
+      "type": "string"
     }
   }
 }
