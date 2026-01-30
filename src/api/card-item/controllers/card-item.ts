@@ -45,12 +45,60 @@ export default factories.createCoreController('api::card-item.card-item' as any,
         orderBy: { added_at: 'desc' },
       });
 
+      // Filter out purchased courses
+      const validCardItems: any[] = [];
+      const purchasedCourseIds: number[] = [];
+
+      for (const item of cardItems) {
+        if (!item.course) {
+          strapi.log.warn('[Card Item] Cart item has no course, skipping:', item.id);
+          // Remove orphaned cart item
+          try {
+            await strapi.entityService.delete('api::card-item.card-item' as any, item.id);
+          } catch (error) {
+            strapi.log.error('[Card Item] Failed to delete orphaned cart item:', error);
+          }
+          continue;
+        }
+
+        // Check if course is purchased
+        const purchaseTransactions: any = await strapi.db.query('api::purchase-transaction.purchase-transaction').findMany({
+          where: {
+            user: {
+              id: user.id,
+            },
+            course_course: {
+              id: item.course.id,
+            },
+            state: 'completed',
+          },
+          limit: 1,
+        });
+
+        if (purchaseTransactions && purchaseTransactions.length > 0) {
+          purchasedCourseIds.push(item.course.id);
+          // Remove purchased course from cart
+          try {
+            await strapi.entityService.delete('api::card-item.card-item' as any, item.id);
+            strapi.log.info('[Card Item] Removed purchased course from cart:', item.course.id);
+          } catch (error) {
+            strapi.log.error('[Card Item] Failed to remove purchased course from cart:', error);
+          }
+        } else {
+          validCardItems.push(item);
+        }
+      }
+
+      if (purchasedCourseIds.length > 0) {
+        strapi.log.info(`[Card Item] Filtered out ${purchasedCourseIds.length} purchased courses from cart`);
+      }
+
       console.log('\n========================================');
-      console.log('[Card Item] Fetched Card items:', cardItems.length);
+      console.log('[Card Item] Fetched Card items:', validCardItems.length, '(filtered from', cardItems.length, 'total)');
       console.log('========================================\n');
       
-      if (cardItems.length > 0) {
-        cardItems.forEach((item: any, index: number) => {
+      if (validCardItems.length > 0) {
+        validCardItems.forEach((item: any, index: number) => {
           console.log(`\n---------- Item ${index + 1} ----------`);
           console.log('Cart Item ID:', item.id);
           console.log('Cart Item DocumentId:', item.documentId);
@@ -65,7 +113,7 @@ export default factories.createCoreController('api::card-item.card-item' as any,
         });
       }
       
-      return { data: cardItems };
+      return { data: validCardItems };
     } catch (error) {
       strapi.log.error('[Card Item] Error fetching user card:', error);
       return ctx.internalServerError('Failed to fetch card items');
@@ -103,6 +151,26 @@ export default factories.createCoreController('api::card-item.card-item' as any,
         documentId: course.documentId,
         price: course.Price
       });
+
+      // Check if course is already purchased
+      const courseIdentifier = course.documentId || course.id;
+      const purchaseTransactions: any = await strapi.db.query('api::purchase-transaction.purchase-transaction').findMany({
+        where: {
+          user: {
+            id: user.id,
+          },
+          course_course: {
+            id: course.id,
+          },
+          state: 'completed',
+        },
+        limit: 1,
+      });
+
+      if (purchaseTransactions && purchaseTransactions.length > 0) {
+        strapi.log.info('[Card Item] Course already purchased, preventing add to cart:', courseIdentifier);
+        return ctx.badRequest('You have already purchased this course. Check your enrolled courses.');
+      }
 
       // Check if item already exists in card using numeric ID
       const existing: any = await strapi.db.query('api::card-item.card-item').findMany({
